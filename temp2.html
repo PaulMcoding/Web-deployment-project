@@ -6,19 +6,32 @@
 </head>
 <body>
     <h1>Data from Database</h1>
-    <p id="dataParagraph"></p>
+
+    <p id="dataParagraph1"></p>
+    <p id="dataParagraph2"></p>
+    <!-- Add more paragraphs as needed -->
 
     <script>
-        // Fetch data from the server
-        fetch('/getData')
-            .then(response => response.json())
-            .then(data =>
-            {
-                const dataParagraph = document.getElementById('dataParagraph');
-                const imageElements = data.map(item => `<img src="${item.car_image}" alt="Car Image">`);
-                dataParagraph.innerHTML = imageElements.join('');
-            })
-            .catch(error => console.error('Error fetching data:', error));
+        // Array of img_ids for each paragraph
+        const imgIds = [1, 2]; // Add more img_ids as needed
+
+        // Function to fetch data and update a paragraph
+        function fetchDataAndUpdateParagraph(imgId, paragraphId) {
+            fetch(`/getData/${imgId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const dataParagraph = document.getElementById(paragraphId);
+                    const imageElements = data.map(item => `<img src="${item.car_image}" alt="Car Image">`);
+                    dataParagraph.innerHTML = imageElements.join('');
+                })
+                .catch(error => console.error(`Error fetching data for paragraph ${paragraphId}:`, error));
+        }
+
+        // Loop through imgIds and update corresponding paragraphs
+        imgIds.forEach((imgId, index) => {
+            const paragraphId = `dataParagraph${index + 1}`;
+            fetchDataAndUpdateParagraph(imgId, paragraphId);
+        });
     </script>
 </body>
 </html>

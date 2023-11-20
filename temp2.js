@@ -18,9 +18,11 @@ app.get('/', function (req, res) {
 });
 
 // Endpoint to handle client-side database request
-app.get('/getData', function (req, res) {
-  var query = "SELECT * FROM temp";
-  dbConnection.query(query, function (error, data) {
+app.get('/getData/:car_id', function (req, res) {
+  var imgId = req.params.car_id;
+  var query = "SELECT car_image FROM car_info WHERE car_id = ?";
+
+  dbConnection.query(query, [imgId], function (error, data) {
     if (error) {
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
@@ -28,6 +30,7 @@ app.get('/getData', function (req, res) {
     }
   });
 });
+
 
 app.listen(8080, function () {
   console.log('Server is running on port 8080');
