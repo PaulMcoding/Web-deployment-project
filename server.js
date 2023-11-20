@@ -28,6 +28,10 @@ var server = http.createServer(function (req, res) {
       console.error('Error querying the database: ' + error);
       return;
     }
+    else
+    {
+
+    }
 
     // Extract and format the SQL results as plain text
     var sqlResults = results.map(result => Object.values(result).join('\t')).join('\n');
