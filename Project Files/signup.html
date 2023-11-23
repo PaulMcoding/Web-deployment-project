@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="../boot/assets/js/color-modes.js"></script>
+  <head> <script src="boot/assets/js/color-modes.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="../boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -92,24 +92,23 @@
       }
     </style>
 
-    
-    <!-- Custom styles for this template -->
+
     <link href="CSS/sign-in.css" rel="stylesheet">
-  </head>
+  </head >
   <header data-bs-theme="dark">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">Paul & William's Car sales</a>
+      <a class="navbar-brand" href="/">Paul & William's Car sales</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link" href="sign-in.html">Sign in</a>
+            <a class="nav-link" href="sign">Sign in</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Cars in stock</a>
+            <a class="nav-link" href="album">Cars in stock</a>
           </li>
         </ul>
         <form class="d-flex" role="search">
@@ -173,11 +172,11 @@
       </ul>
     </div>
 
-    
+
 <main class="form-signin w-100 m-auto">
   <form method="post">
     <img class="mb-4" src="https://toyotaowners.b-cdn.net/uploads/monthly_2018_09/iq_forum_iq_copy.jpg.d9fc2a6d645e83b0bc75b2fb5ae68f34.jpg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
     <div class="form-floating" >
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
@@ -193,11 +192,16 @@
         Remember me
       </label>
     </div>
-    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    <button class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
+
+<button class="btn btn-primary w-100 py-2"
+        style="background-color: teal; border-color: teal; margin-top: 10px;"
+        onclick="window.location.href='/signin'" type="button">Sign in instead</button>
+
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2021–2023 PW and Associates</p>
   </form>
 </main>
-<script src="../boot/assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
 
     </body>
 </html>
