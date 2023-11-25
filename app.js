@@ -4,6 +4,9 @@ var http = require('http');
 var { Pool } = require('pg');
 var url = require('url');
 var path = require('path');
+
+var bcrypt = require('bcrypt');
+var saltRounds = 10;
 app.use(express.json());
 
 // Pauls Connection
@@ -111,6 +114,28 @@ app.post('/update', async (req, res) => {
     res.status(500).send("Error " + err);
   }
 });
+
+app.post('/signup', async (req, res) => {
+  let client;
+
+  try {
+    const { email, password } = req.body;
+    console.log(email, password);
+//    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    client = await pool.connect();
+    const result = await client.query('INSERT INTO webusers (email, u_pass) VALUES ($1, $2) RETURNING id', [email,
+    password]);
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+});
+
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');
