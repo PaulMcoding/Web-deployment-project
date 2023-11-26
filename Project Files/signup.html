@@ -194,7 +194,7 @@
 
 <button class="btn btn-primary w-100 py-2"
         style="background-color: teal; border-color: teal; margin-top: 10px;"
-        onclick="window.location.href='/signin'" type="button">Sign in instead</button>
+        onclick="window.location.href='/signin'">Sign in instead</button>
 
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2021–2023 PW and Associates</p>
 </main>
@@ -202,35 +202,33 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('signupForm');
-
         form.addEventListener('submit', async function (event) {
             event.preventDefault();  // Prevent the default form submission
-
             const formData = new FormData(form);
             const jsonData = {};
-
             formData.forEach((value, key) => {
                 jsonData[key] = value;
             });
-
             try {
-    const response = await fetch('/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonData),
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(jsonData),
+                });
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    console.error('Failed to sign up:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during sign up:', error);
+            }
+        });
     });
-    if (response.ok) {
-        window.location.href = '/';
-    } else {
-        console.error('Failed to sign up:', response.statusText);
-    }
-} catch (error) {
-    console.error('Error during sign up:', error);
-}
-
 </script>
+
 
     </body>
 </html>
