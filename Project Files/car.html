@@ -13,14 +13,18 @@
   <table border="1">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>Car ID</th>
         <th>Make</th>
         <th>Model</th>
-        <th>Action</th>
+        <th>Price</th>
+        <th>Year</th>
+        <th>Miles</th>
+        <th>Location</th>
+        <th>Sold</th>
+        <th>Image</th>
       </tr>
     </thead>
     <tbody id="carTableBody">
-      <!-- Car data will be dynamically inserted here -->
     </tbody>
   </table>
 
@@ -33,19 +37,44 @@
     <input type="text" id="make" name="make" required>
     <label for="model">Model:</label>
     <input type="text" id="model" name="model" required>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" required>
+    <label for="year">Year:</label>
+    <input type="text" id="year" name="year" maxlength="4" required>
+    <label for="miles">Miles:</label>
+    <input type="text" id="miles" name="miles" maxlength="8" required>
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required>
+    <label for="sold">Sold:</label>
+    <input type="text" id="sold" name="sold" maxlength="1" required>
+    <label for="image">Image URL:</label>
+    <input type="text" id="image" name="image" required>
     <button type="button" onclick="addCar()">Add Car</button>
   </form>
 
   <hr>
 
   <!-- Form for Updating a Car -->
-  <h2>Update Car</h2>
-  <h2>Update Car</h2>
-  <form id="updateCarForm">
+    <h2>Update Car</h2>
+    <form id="updateCarForm">
     <label for="updateId">Car ID to Update:</label>
     <input type="number" id="updateId" name="updateId" required>
-    <label for="newModel">New Model:</label>
-    <input type="text" id="newModel" name="newModel" required>
+    <label for="make">Make:</label>
+    <input type="text" id="make" name="make" required>
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model" required>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" required>
+    <label for="year">Year:</label>
+    <input type="text" id="year" name="year" maxlength="4" required>
+    <label for="miles">Miles:</label>
+    <input type="text" id="miles" name="miles" maxlength="8" required>
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required>
+    <label for="sold">Sold:</label>
+    <input type="text" id="sold" name="sold" maxlength="1" required>
+    <label for="image">Image URL:</label>
+    <input type="text" id="image" name="image" required>
     <button type="button" onclick="updateCar()">Update Car</button>
   </form>
 
@@ -60,7 +89,7 @@
   </form>
 
   <script>
-    // Function to fetch and display car data
+  // Function to display table
     async function displayCars() {
       const response = await fetch('/getdata');
       const data = await response.json();
@@ -71,10 +100,16 @@
         data.results.forEach(car => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${car.id}</td>
-            <td>${car.make}</td>
-            <td>${car.model}</td>
-            <td><button onclick="deleteCar(${car.id})">Delete</button></td>
+            <td>${car.car_id}</td>
+            <td>${car.car_make}</td>
+            <td>${car.car_model}</td>
+            <td>${car.car_price}</td>
+            <td>${car.car_year}</td>
+            <td>${car.car_miles}</td>
+            <td>${car.car_location}</td>
+            <td>${car.car_sold}</td>
+            <td><img src="${car.car_image}" alt="Car Image" style="width: 100px; height: auto;"></td>
+
           `;
           carTableBody.appendChild(row);
         });
@@ -85,13 +120,21 @@
     async function addCar() {
       const make = document.getElementById('make').value;
       const model = document.getElementById('model').value;
+      const price = document.getElementById('price').value;
+      const year = document.getElementById('year').value;
+      const miles = document.getElementById('miles').value;
+      const location = document.getElementById('location').value;
+      const sold = document.getElementById('sold').value;
+      const image = document.getElementById('image').value;
+
       const response = await fetch('/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ make, model }),
+        body: JSON.stringify({ make, model, price, year, miles, location, sold, image }),
       });
+
       const result = await response.json();
       console.log(result.message);
       displayCars();
@@ -100,22 +143,31 @@
     // Function to update a car
     async function updateCar() {
       const updateId = document.getElementById('updateId').value;
-      const newModel = document.getElementById('newModel').value;
+      const make = document.getElementById('make').value;
+      const model = document.getElementById('model').value;
+      const price = document.getElementById('price').value;
+      const year = document.getElementById('year').value;
+      const miles = document.getElementById('miles').value;
+      const location = document.getElementById('location').value;
+      const sold = document.getElementById('sold').value;
+      const image = document.getElementById('image').value;
+
       const response = await fetch('/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: updateId, new_model: newModel }),
+        body: JSON.stringify({ id: updateId, make, model, price, year, miles, location, sold, image }),
       });
+
       const result = await response.json();
       console.log(result.message);
       displayCars();
     }
 
     // Function to delete a car
-    async function deleteCar() {
-      const deleteId = document.getElementById('deleteId').value;
+    async function deleteCar(id) {
+      const deleteId = id || document.getElementById('deleteId').value;
       const response = await fetch('/delete', {
         method: 'POST',
         headers: {
