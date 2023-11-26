@@ -82,6 +82,9 @@ app.post('/add', async (req, res) => {
     const { make, model } = req.body;
     const client = await pool.connect();
     const result = await client.query('INSERT INTO car (make, model) VALUES ($1, $2) RETURNING id', [make, model]);
+    //to change to a relational database design with make/model database can do "insert (or select) into make(make)
+    //value (make) returning ID
+    //then use that ID to insert into model with makeID
     const id = result.rows[0].id;
     const queryResult = await client.query('SELECT * FROM car WHERE id = $1', [id]);
     const results =(queryResult) ? queryResult.rows : null;
