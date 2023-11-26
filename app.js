@@ -10,22 +10,22 @@ var saltRounds = 10;
 app.use(express.json());
 
 // Pauls Connection
-var pool = new Pool({
-  user: 'paul',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'password',
-  port: 54321
-});
-
-//// Williams Connection
 //var pool = new Pool({
-//  user: '', // PostgreSQL database username
-//  host: 'localhost', // PostgreSQL database host
-//  database: '', // PostgreSQL database name
-//  password: '', // PostgreSQL database password
-//  port: , // PostgreSQL database port
+//  user: 'paul',
+//  host: 'localhost',
+//  database: 'postgres',
+//  password: 'password',
+//  port: 54321
 //});
+
+// Williams Connection
+var pool = new Pool({
+  user: 'BUILDER', // PostgreSQL database username
+  host: 'localhost', // PostgreSQL database host
+  database: 'postgres', // PostgreSQL database name
+  password: 'cls2', // PostgreSQL database password
+  port: 54321 // PostgreSQL database port
+});
 
 app.use(express.static(path.join(__dirname, 'Project Files')));
 
@@ -47,6 +47,10 @@ app.get('/album', (req, res) => {
 
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signup.html');
+});
+
+app.get('/car', (req, res) => {
+  res.sendFile(__dirname + '/Project Files/car.html');
 });
 
 app.get('/getdata', async (req, res) => {
@@ -98,16 +102,15 @@ app.post('/add', async (req, res) => {
 
 app.post('/update', async (req, res) => {
   try {
-    const { old_model, new_model } = req.body;
+    const { id, new_model } = req.body;
     const client = await pool.connect();
-    const updateResult = await client.query('UPDATE car SET model = $1 WHERE model = $2 RETURNING id', [new_model, old_model]);
+    const updateResult = await client.query('UPDATE car SET model = $1 WHERE id = $2 RETURNING id', [new_model, id]);
 
     if (updateResult.rows.length === 0) {
-      res.status(404).send({ message: "No car found for the given old model" });
+      res.status(404).send({ message: "No car found for the given id" });
       return;
     }
 
-    const id = updateResult.rows[0].id;
     const queryResult = await client.query('SELECT * FROM car WHERE id = $1', [id]);
     const results = (queryResult) ? queryResult.rows : null;
     res.send({ message: "Updated Car", results: results });
@@ -117,6 +120,7 @@ app.post('/update', async (req, res) => {
     res.status(500).send("Error " + err);
   }
 });
+
 
 app.post('/signup', async (req, res) => {
   try {
