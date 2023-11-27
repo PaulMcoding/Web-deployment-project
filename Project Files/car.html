@@ -15,6 +15,42 @@
     <link href="boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+
+        table {
+    margin: 20px 0;
+    padding: 20px;
+}
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around; /* Adjust as needed */
+        }
+
+        .forms-container {
+            display: flex;
+            justify-content: space-around; /* Adjust as needed */
+            width: 100%;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        form label {
+            margin-bottom: 5px;
+        }
+
+        form input {
+            width: 100%; /* Make the input fields fill the width */
+            padding: 5px;
+            box-sizing: border-box; /* Include padding and border in width calculation */
+            margin-bottom: 10px;
+        }
+
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -180,6 +216,8 @@
     <body>
 <main>
 
+    <br>
+    <br>
   <h1>Car Management</h1>
 
   <!-- Display Car Table -->
@@ -204,6 +242,7 @@
   <hr>
 
   <!-- Form for Adding a New Car -->
+    <div class="forms-container">
   <h2>Add New Car</h2>
   <form id="addCarForm">
     <label for="make">Make:</label>
@@ -260,6 +299,7 @@
     <input type="number" id="deleteId" name="deleteId" required>
     <button type="button" onclick="deleteCar()">Delete Car</button>
   </form>
+    </div>
 </main>
     </body>
     <!-- FOOTER -->
