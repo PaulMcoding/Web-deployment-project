@@ -82,17 +82,19 @@ app.post('/add', async (req, res) => {
 
 app.post('/update', async (req, res) => {
   try {
-    const { id, make, model, price, year, miles, location, sold, image } = req.body;
+    res.header('Content-Type', 'application/json');
+    const { updateId, make, model, price, year, miles, location, sold, image } = req.body;
+    console.log(updateId, make, model, price, year, miles, location, sold, image);
     const client = await pool.connect();
     const updateResult = await client.query(
       'UPDATE car SET car_make = $1, car_model = $2, car_price = $3, car_year = $4, car_miles = $5, car_location = $6, car_sold = $7, car_image = $8 WHERE car_id = $9 RETURNING car_id',
-      [make, model, price, year, miles, location, sold, image, id]
+      [make, model, price, year, miles, location, sold, image, updateId]
     );
     if (updateResult.rows.length === 0) {
       res.status(404).send({ message: "No car found for the given car_id" });
       return;
     }
-    const queryResult = await client.query('SELECT * FROM car WHERE car_id = $1', [id]);
+    const queryResult = await client.query('SELECT * FROM car WHERE car_id = $1', [updateId]);
     const updatedCar = (queryResult) ? queryResult.rows[0] : null;
     res.json({ message: "Updated Car", car: updatedCar });
     client.release();
