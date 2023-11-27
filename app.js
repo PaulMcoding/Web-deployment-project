@@ -42,7 +42,7 @@ app.get('/signin', (req, res) => {
 });
 
 app.get('/album', (req, res) => {
-  res.sendFile(__dirname + '/Project Files/album.html');
+  res.sendFile(__dirname + '/Project Files/car.html');
 });
 
 app.get('/signup', (req, res) => {
@@ -50,7 +50,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.get('/car', (req, res) => {
-  res.sendFile(__dirname + '/Project Files/car.html');
+  res.sendFile(__dirname + '/Project Files/car2.html');
 });
 
 app.get('/getdata', async (req, res) => {
@@ -70,7 +70,7 @@ app.post('/delete', async (req, res) => {
   try {
     const { id } = req.body;
     const client = await pool.connect();
-    await client.query('DELETE FROM car WHERE id = $1', [id]);
+    await client.query('DELETE FROM car WHERE car_id = $1', [id]);
     const result = await client.query('SELECT * FROM car');
     const results = { 'results': (result) ? result.rows : null };
     res.send({ message: "Remaining results", results: results });
