@@ -464,7 +464,7 @@
   async function displayCar(car_id, containerId) {
     const response = await fetch(`/getdata`);
     const data = await response.json();
-    console.log(data);
+    writeToJSONFile(data);
 
     const carImageContainer = document.getElementById(containerId);
 
@@ -488,6 +488,22 @@
   displayCar(6, 'carContainer7');
   displayCar(7, 'carContainer8');
   displayCar(8, 'carContainer9');
+</script>
+
+<script>
+  async function writeToJSONFile(data) {
+  const response = await fetch('/writeToFile', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.text();
+  console.log(result);
+}
+
 </script>
 
     </body>

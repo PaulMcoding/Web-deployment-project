@@ -1,0 +1,147 @@
+{
+  "results": [
+    {
+      "car_id": 1,
+      "car_make": "Honda",
+      "car_model": "Acty",
+      "car_price": "6548.99",
+      "car_year": "1989",
+      "car_miles": "123573",
+      "car_location": "Galway",
+      "car_sold": "0",
+      "car_image": "https://japanesenostalgiccar.com/wordpress/wp-content/uploads/2022/08/Honda-Acty-4WD-Attack-1988.jpg"
+    },
+    {
+      "car_id": 3,
+      "car_make": "Nissan",
+      "car_model": "Skyline r32",
+      "car_price": "64555.99",
+      "car_year": "1994",
+      "car_miles": "101486",
+      "car_location": "Dublin",
+      "car_sold": "0",
+      "car_image": "https://car-images.bauersecure.com/wp-images/1372/1056x594/skyline_01.jpg"
+    },
+    {
+      "car_id": 4,
+      "car_make": "Nissan",
+      "car_model": "180sx",
+      "car_price": "23000.00",
+      "car_year": "1992",
+      "car_miles": "142000",
+      "car_location": "Louth",
+      "car_sold": "0",
+      "car_image": "https://powervehicles.com/wp-content/uploads/2022/11/180sx-17.jpg"
+    },
+    {
+      "car_id": 5,
+      "car_make": "BMW",
+      "car_model": "M5 Competition",
+      "car_price": "162000.00",
+      "car_year": "2019",
+      "car_miles": "6000",
+      "car_location": "Dublin, Ohio",
+      "car_sold": "0",
+      "car_image": "https://www.motortrend.com/uploads/2022/10/2023-BMW-M5-exterior-8.jpg"
+    },
+    {
+      "car_id": 6,
+      "car_make": "Toyota",
+      "car_model": "Chaser JZX100",
+      "car_price": "25500.00",
+      "car_year": "2003",
+      "car_miles": "87000",
+      "car_location": "Donegal",
+      "car_sold": "0",
+      "car_image": "https://cdn.dealeraccelerate.com/driver/1/446/16782/790x1024/1996-toyota-chaser-tourer-v-jzx100"
+    },
+    {
+      "car_id": 7,
+      "car_make": "Toyota",
+      "car_model": "Supra",
+      "car_price": "89000.00",
+      "car_year": "1999",
+      "car_miles": "18000",
+      "car_location": "Kerry",
+      "car_sold": "0",
+      "car_image": "https://images.drive.com.au/driveau/image/private/c_fill,f_auto,g_auto,h_1080,q_auto:eco,w_1920/v1/ca-s3/2013/08/toyota-supra--e1375969681104-625x322.jpg"
+    },
+    {
+      "car_id": 8,
+      "car_make": "Mitsubishi",
+      "car_model": "EVO VI",
+      "car_price": "17500.00",
+      "car_year": "1999",
+      "car_miles": "45750",
+      "car_location": "Balbriggan",
+      "car_sold": "0",
+      "car_image": "https://media.evo.co.uk/image/private/s--EkSJ-8g5--/v1556216630/evo/2017/05/tommimak4.jpg"
+    },
+    {
+      "car_id": 9,
+      "car_make": "BMW",
+      "car_model": "330CI Drift car",
+      "car_price": "19900.00",
+      "car_year": "2003",
+      "car_miles": "189000",
+      "car_location": "Dublin",
+      "car_sold": "0",
+      "car_image": "https://www.driftworks.com/blog/2010/07/build-feature-bmw-e46-330ci/img_0139/"
+    },
+    {
+      "car_id": 10,
+      "car_make": "Lamborghini",
+      "car_model": "Diablo",
+      "car_price": "600000.00",
+      "car_year": "2001",
+      "car_miles": "600",
+      "car_location": "Dublin",
+      "car_sold": "0",
+      "car_image": "https://s.yimg.com/ny/api/res/1.2/EsaKOe5ecudzx2jdLDzpmA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/road_track_223/203c87353dc56f7a59e2fd96df5aa058"
+    },
+    {
+      "car_id": 11,
+      "car_make": "Toyota",
+      "car_model": "GR Corolla",
+      "car_price": "37195.00",
+      "car_year": "2022",
+      "car_miles": "47650",
+      "car_location": "Wexford",
+      "car_sold": "0",
+      "car_image": "https://www.topgear.com/sites/default/files/2022/06/1-Toyota-Corolla-GR-Morizo-Edition.jpg"
+    },
+    {
+      "car_id": 12,
+      "car_make": "Aston Martin",
+      "car_model": "DB9",
+      "car_price": "84950.00",
+      "car_year": "2015",
+      "car_miles": "27870",
+      "car_location": "Cork",
+      "car_sold": "0",
+      "car_image": "https://assets.newatlas.com/dims4/default/30e5a82/2147483647/strip/true/crop/1280x720+0+31/resize/1200x675!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2Farchive%2Faston-martin-db9-2013.jpg"
+    },
+    {
+      "car_id": 13,
+      "car_make": "Porsche",
+      "car_model": "GT3RS",
+      "car_price": "223800.00",
+      "car_year": "2021",
+      "car_miles": "2475",
+      "car_location": "Dublin",
+      "car_sold": "0",
+      "car_image": "https://smgmedia.blob.core.windows.net/images/129280/1920/porsche-911-gt3-coupe-10814f193b36.jpg"
+    },
+    {
+      "car_id": 14,
+      "car_make": "Ineos",
+      "car_model": "Grenadier",
+      "car_price": "84500.00",
+      "car_year": "2023",
+      "car_miles": "0",
+      "car_location": "London",
+      "car_sold": "0",
+      "car_image": "https://images.drive.com.au/driveau/image/upload/c_fill,f_auto,g_auto,h_1080,q_auto:eco,w_1920/v1/cms/uploads/such2o29cjotnluoe540"
+    }
+  ]
+}

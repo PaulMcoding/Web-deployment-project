@@ -4,6 +4,8 @@ var http = require('http');
 var { Pool } = require('pg');
 var url = require('url');
 var path = require('path');
+var fs = require('fs');
+
 
 var bcrypt = require('bcrypt');
 var saltRounds = 10;
@@ -48,6 +50,12 @@ app.get('/getdata', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }
+});
+
+app.post('/writeToFile', (req, res) => {
+  const data = req.body;
+  fs.writeFileSync('Car.json', JSON.stringify(data, null, 2));
+  res.send('Data written to data.json');
 });
 
 app.post('/delete', async (req, res) => {
