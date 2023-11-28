@@ -50,21 +50,6 @@ app.get('/getdata', async (req, res) => {
   }
 });
 
-app.get('/getcar', async (req, res) => {
-  try {
-    const { id } = req.query;
-    const client = await pool.connect();
-    const result = await client.query('SELECT * FROM car WHERE car_id = $1', [id]);
-    const results = { 'results': (result) ? result.rows : null };
-    console.log(result);
-    res.send(results);
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-});
-
 app.post('/delete', async (req, res) => {
   try {
     const { id } = req.body;
