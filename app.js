@@ -27,6 +27,7 @@ var pool = new Pool({
 //  port: 54321 // PostgreSQL database port
 //});
 
+//Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
 app.get('/', (req, res) => {res.sendFile(__dirname + '/Project Files/index.html');});
 app.get('/checkout', (req, res) => {res.sendFile(__dirname + '/Project Files/checkout.html');});
@@ -34,11 +35,13 @@ app.get('/signin', (req, res) => {res.sendFile(__dirname + '/Project Files/signi
 app.get('/album', (req, res) => {res.sendFile(__dirname + '/Project Files/car.html');});
 app.get('/signup', (req, res) => {res.sendFile(__dirname + '/Project Files/signup.html');});
 
+//database manipulation routes
 app.get('/getdata', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM car');
     const results = { 'results': (result) ? result.rows : null };
+    console.log(result);
     res.send(results);
     client.release();
   } catch (err) {
@@ -104,7 +107,7 @@ app.post('/update', async (req, res) => {
   }
 });
 
-
+//User signing in routes
 app.post('/signup', async (req, res) => {
   try {
     const { email, password } = req.body;
