@@ -9,23 +9,23 @@ var bcrypt = require('bcrypt');
 var saltRounds = 10;
 app.use(express.json());
 
-// Pauls Connection
-var pool = new Pool({
-  user: 'paul',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'password',
-  port: 54321
-});
-
-//// Williams Connection
+//// Pauls Connection
 //var pool = new Pool({
-//  user: 'BUILDER', // PostgreSQL database username
-//  host: 'localhost', // PostgreSQL database host
-//  database: 'postgres', // PostgreSQL database name
-//  password: 'cls2', // PostgreSQL database password
-//  port: 54321 // PostgreSQL database port
+//  user: 'paul',
+//  host: 'localhost',
+//  database: 'postgres',
+//  password: 'password',
+//  port: 54321
 //});
+
+// Williams Connection
+var pool = new Pool({
+  user: 'BUILDER', // PostgreSQL database username
+  host: 'localhost', // PostgreSQL database host
+  database: 'postgres', // PostgreSQL database name
+  password: 'cls2', // PostgreSQL database password
+  port: 54321 // PostgreSQL database port
+});
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -40,6 +40,21 @@ app.get('/getdata', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM car');
+    const results = { 'results': (result) ? result.rows : null };
+    console.log(result);
+    res.send(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+app.get('/getcar', async (req, res) => {
+  try {
+    const { id } = req.query;
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM car WHERE car_id = $1', [id]);
     const results = { 'results': (result) ? result.rows : null };
     console.log(result);
     res.send(results);
