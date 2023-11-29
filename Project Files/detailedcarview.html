@@ -178,33 +178,92 @@
 
 <main>
 
-    <div class="album py-4 bg-body-tertiary">
-        <div class="container">
-            <div class="col">
-              <div class="card shadow-sm">
-                 <img class="bd-placeholder-img card-img-top" width="100%" height="100%;"
-                      xmlns="http://www.w3.org/2000/svg" role="img" src="https://media.carsandbids.com/cdn-cgi/image/width=2080,quality=70/da6e8a1d4896127a9d2adf83461993b45339474c/photos/3y4AEygE-iwmzRqZkRZ-(edit).jpg?t=166915504019">
-                <div class="card-body">
-                  <b><p class="card-text" id="carname1"></p></b>
-                  <p class="card-text" id="desc1">Good evening ladies and gentlemen of the jury</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <a href="checkout" class="btn btn-sm btn-outline-secondary">Quick Buy</a>
-                    </div>
-                    <small class="text-body-secondary" id="price1"></small>
+  <div class="album py-4 bg-body-tertiary">
+    <div class="container">
+      <div class="row">
+        <!-- Car Image on the Left -->
+        <div class="col-md-6">
+          <div class="card shadow-sm">
+            <img class="bd-placeholder-img card-img-top" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer1">
+          </div>
+        </div>
+  
+        <!-- Car Details on the Right -->
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between h-100"> <!-- Added d-flex and flex-column classes here -->
+              <div>
+                <b><p class="card-text" id="carname1"></p></b>
+                <p class="card-text" id="desc1"></p>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Message Seller</button>
                   </div>
+                  <small class="text-body-secondary" id="price1"></small>
                 </div>
               </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  
+  
 
   <!-- FOOTER -->
-  <footer class="container" style="margin-top: 100px">
+  <footer class="container" style="margin-top:350px;">
     <p class="float-end"><a href="#">Back to top</a></p>
     <p>&copy; 2021–2023 PW and Associates &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
   </footer>
 </main>
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  async function displayCar(car_id, containerId, carname, descId, price) {
+    console.log("IN the function: ", car_id)
+    const response = await fetch(`/getdetails`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ carID: car_id }),
+    });
+
+    console.log(response);
+    const data = await response.json();
+
+    const carImageContainer = document.getElementById(containerId);
+    const carsName = document.getElementById(carname);
+    const description = document.getElementById(descId);
+    const carPrice = document.getElementById(price);
+
+    if (data.results && data.results.length > 0) {
+      const firstCar = data.results[0];
+      const imageUrl = firstCar.car_image;
+      const carn_ame = firstCar.makename + " " + firstCar.car_model;
+      const cardesc = firstCar.car_desc;
+      const pricecar = firstCar.car_price;
+
+      carImageContainer.src = imageUrl;
+      carImageContainer.alt = `Car Image ${car_id}`;
+      carsName.textContent = carn_ame;
+      description.textContent = cardesc;
+      carPrice.textContent = "$" + pricecar;
+
+    } else {
+      console.error(`No car data available for car_id ${car_id}.`);
+    }
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const carID = urlParams.get('carID');
+
+  displayCar(carID, 'carContainer1', 'carname1', 'desc1', 'price1');
+
+</script>
+
     </body>
 </html>
