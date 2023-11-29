@@ -41,7 +41,7 @@ app.get('/signup', (req, res) => {res.sendFile(__dirname + '/Project Files/signu
 app.get('/getdata', async (req, res) => {
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM car');
+    const result = await client.query('SELECT * FROM car join make using(makeid)');
     const results = { 'results': (result) ? result.rows : null };
     console.log(result);
     res.send(results);
@@ -63,7 +63,7 @@ app.post('/delete', async (req, res) => {
     const { id } = req.body;
     const client = await pool.connect();
     await client.query('DELETE FROM car WHERE car_id = $1', [id]);
-    const result = await client.query('SELECT * FROM car');
+    const result = await client.query('SELECT * FROM car join make using(makeid)');
     const results = { 'results': (result) ? result.rows : null };
     res.send({ message: "Remaining results", results: results });
     client.release();
@@ -75,13 +75,24 @@ app.post('/delete', async (req, res) => {
 
 app.post('/add', async (req, res) => {
   try {
-    const { make, model, price, year, miles, location, sold, image } = req.body;
+    const { make, model, price, year, miles, location, desc, image } = req.body;
     const client = await pool.connect();
-    const result = await client.query('INSERT INTO car (car_make, car_model, car_price, car_year, car_miles, car_location, car_sold, car_image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING car_id',
-      [make, model, price, year, miles, location, sold, image]);
+    let makeId;
+
+    const makeCheck = await client.query('Select * from make where makename = $1', [make])
+
+    if (makeCheck.rows.length > 0) {
+      makeId = makeCheck.rows[0].makeid;
+    } else {
+      const makeResult = await pool.query('INSERT INTO make(makename) VALUES ($1) RETURNING makeid', [make]);
+      makeId = makeResult.rows[0].makeid;
+    }
+  
+    const result = await client.query('INSERT INTO car (makeid, car_model, car_price, car_year, car_miles, car_location, car_desc, car_image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING car_id',
+      [makeId, model, price, year, miles, location, desc, image]);
 
     const carId = result.rows[0].car_id;
-    const queryResult = await client.query('SELECT * FROM car WHERE car_id = $1', [carId]);
+    const queryResult = await client.query('SELECT * FROM car join make using(makeid) WHERE car_id = $1', [carId]);
     const newCar = (queryResult) ? queryResult.rows[0] : null;
     res.json({ message: "New Car Added", car: newCar });
     client.release();
@@ -94,18 +105,18 @@ app.post('/add', async (req, res) => {
 app.post('/update', async (req, res) => {
   try {
     res.header('Content-Type', 'application/json');
-    const { id, make, model, price, year, miles, location, sold, image } = req.body;
-    console.log(id, make, model, price, year, miles, location, sold, image);
+    const { id, make, model, price, year, miles, location, desc, image } = req.body;
+    console.log(id, make, model, price, year, miles, location, desc, image);
     const client = await pool.connect();
     const updateResult = await client.query(
-      'UPDATE car SET car_make = $1, car_model = $2, car_price = $3, car_year = $4, car_miles = $5, car_location = $6, car_sold = $7, car_image = $8 WHERE car_id = $9 RETURNING car_id',
-      [make, model, price, year, miles, location, sold, image, id]
+      'UPDATE car SET makeid = $1, car_model = $2, car_price = $3, car_year = $4, car_miles = $5, car_location = $6, car_desc = $7, car_image = $8 WHERE car_id = $9 RETURNING car_id',
+      [make, model, price, year, miles, location, desc, image, id]
     );
     if (updateResult.rows.length === 0) {
       res.status(404).send({ message: "No car found for the given car_id" });
       return;
     }
-    const queryResult = await client.query('SELECT * FROM car WHERE car_id = $1', [id]);
+    const queryResult = await client.query('SELECT * FROM car join make using(makeid) WHERE car_id = $1', [id]);
     const updatedCar = (queryResult) ? queryResult.rows[0] : null;
     res.json({ message: "Updated Car", car: updatedCar });
     client.release();

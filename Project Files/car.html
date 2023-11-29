@@ -223,13 +223,14 @@
     <thead>
       <tr>
         <th>Car ID</th>
+        <th>Make ID</th>
         <th>Make</th>
         <th>Model</th>
         <th>Price</th>
         <th>Year</th>
         <th>Miles</th>
         <th>Location</th>
-        <th>Sold</th>
+        <th>Car Description</th>
         <th>Image</th>
       </tr>
     </thead>
@@ -255,8 +256,8 @@
     <input type="text" id="miles" name="miles" maxlength="8" required>
     <label for="location">Location:</label>
     <input type="text" id="location" name="location" required>
-    <label for="sold">Sold:</label>
-    <input type="text" id="sold" name="sold" maxlength="1" required>
+    <label for="desc">Car Description:</label>
+    <input type="text" id="desc1" name="desc" required>
     <label for="image">Image URL:</label>
     <input type="text" id="image" name="image" required>
     <button type="button" onclick="addCar()">Add Car</button>
@@ -269,7 +270,7 @@
     <form id="updateCarForm">
     <label for="updateId">Car ID to Update:</label>
     <input type="number" id="updateId" name="updateId" required>
-    <label for="make">Make:</label>
+    <label for="make">Make ID:</label>
     <input type="text" id="make2" name="make" required>
     <label for="model">Model:</label>
     <input type="text" id="model2" name="model" required>
@@ -281,8 +282,8 @@
     <input type="text" id="miles2" name="miles" maxlength="8" required>
     <label for="location">Location:</label>
     <input type="text" id="location2" name="location" required>
-    <label for="sold">Sold:</label>
-    <input type="text" id="sold2" name="sold" maxlength="1" required>
+    <label for="desc">Car Description:</label>
+    <input type="text" id="desc2" name="desc" required>
     <label for="image">Image URL:</label>
     <input type="text" id="image2" name="image" required>
     <button type="button" onclick="updateCar()">Update Car</button>
@@ -320,13 +321,14 @@
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${car.car_id}</td>
-            <td>${car.car_make}</td>
+            <td>${car.makeid}</td>
+            <td>${car.makename}</td>
             <td>${car.car_model}</td>
             <td>${car.car_price}</td>
             <td>${car.car_year}</td>
             <td>${car.car_miles}</td>
             <td>${car.car_location}</td>
-            <td>${car.car_sold}</td>
+            <td>${car.car_desc}</td>
             <td><img src="${car.car_image}" alt="Car Image" style="width: 100px; height: auto;"></td>
           `;
           carTableBody.appendChild(row);
@@ -342,7 +344,7 @@
       const year = document.getElementById('year').value;
       const miles = document.getElementById('miles').value;
       const location = document.getElementById('location').value;
-      const sold = document.getElementById('sold').value;
+      const desc = document.getElementById('desc1').value;
       const image = document.getElementById('image').value;
 
       const response = await fetch('/add', {
@@ -350,7 +352,7 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ make, model, price, year, miles, location, sold, image }),
+        body: JSON.stringify({ make, model, price, year, miles, location, desc, image }),
       });
 
       const result = await response.json();
@@ -367,7 +369,7 @@
       const year = document.getElementById('year2').value;
       const miles = document.getElementById('miles2').value;
       const location = document.getElementById('location2').value;
-      const sold = document.getElementById('sold2').value;
+      const desc = document.getElementById('desc2').value;
       const image = document.getElementById('image2').value;
 
       const response = await fetch('/update', {
@@ -375,7 +377,7 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: updateId, make, model, price, year, miles, location, sold, image }),
+        body: JSON.stringify({ id: updateId, make, model, price, year, miles, location, desc, image }),
       });
 
       const result = await response.json();
