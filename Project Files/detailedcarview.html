@@ -195,8 +195,10 @@
             <div class="card shadow-sm h-100">
               <div class="card-body d-flex flex-column justify-content-between h-100"> 
                 <div>
-                  <b><p class="card-text" id="carname1"></p></b>
+                  <br>
+                  <b><p class="card-text" id="carname1"></p></b><br>
                   <p class="card-text" id="desc1"></p>
+                  <p class="text-body-secondary" id="miles1" style="color: rgb(135, 224, 232) !important"></p>
                 </div>
                 <div class="mt-auto"> 
                   <small class="text-body-secondary" id="location1"></small>
@@ -215,15 +217,14 @@
     </div>
   
   <!-- FOOTER -->
-  <footer class="container" style="margin-top:350px;">
-    <p class="float-end"><a href="#">Back to top</a></p>
+  <footer class="container" style="margin-top:300px;">
     <p>&copy; 2021–2023 PW and Associates &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
   </footer>
 </main>
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  async function displayCar(car_id, containerId, carname, descId, price, location) {
+  async function displayCar(car_id, containerId, carname, descId, price, location, miles) {
     const response = await fetch(`/getdetails`, {
       method: 'POST',
       headers: {
@@ -239,14 +240,16 @@
     const description = document.getElementById(descId);
     const carPrice = document.getElementById(price);
     const sm_loc = document.getElementById(location);
+    const carmiles = document.getElementById(miles);
 
     if (data.results && data.results.length > 0) {
       const firstCar = data.results[0];
       const imageUrl = firstCar.car_image;
-      const carn_ame = firstCar.makename + " " + firstCar.car_model;
+      const carn_ame = firstCar.car_year + " " + firstCar.makename + " " + firstCar.car_model;
       const cardesc = firstCar.car_desc;
       const pricecar = firstCar.car_price;
       const carloc = firstCar.car_location;
+      const mileage = firstCar.car_miles;
 
       carImageContainer.src = imageUrl;
       carImageContainer.alt = `Car Image ${car_id}`;
@@ -254,6 +257,7 @@
       description.textContent = cardesc;
       carPrice.textContent = "$" + pricecar;
       sm_loc.textContent = "Location: " + carloc;
+      carmiles.textContent = "Mileage: " + mileage + " km";
 
     } else {
       console.error(`No car data available for car_id ${car_id}.`);
@@ -263,7 +267,7 @@
   const urlParams = new URLSearchParams(window.location.search);
   const carID = urlParams.get('carID');
 
-  displayCar(carID, 'carContainer1', 'carname1', 'desc1', 'price1', 'location1');
+  displayCar(carID, 'carContainer1', 'carname1', 'desc1', 'price1', 'location1', 'miles1');
 
 </script>
 

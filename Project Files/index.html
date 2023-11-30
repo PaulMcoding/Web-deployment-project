@@ -242,7 +242,7 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="col">
-          <div class="card shadow-sm">
+          <div class="card shadow-sm ">
              <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer1" >
             <div class="card-body">
@@ -263,7 +263,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer2" >
             <div class="card-body">
-              <p class="card-text" id="carname2"></p>
+              <b><p class="card-text" id="carname2"></p></b>
               <p class="card-text" id="desc2"></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -280,7 +280,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer3" >
             <div class="card-body">
-              <p class="card-text" id="carname3"></p>
+              <b><p class="card-text" id="carname3"></p></b>
               <p class="card-text" id="desc3"></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -298,7 +298,7 @@
               <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer4" >
             <div class="card-body">
-              <p class="card-text" id="carname4"></p>
+              <b><p class="card-text" id="carname4"></p></b>
               <p class="card-text" id="desc4"></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -315,7 +315,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer5" >
               <div class="card-body">
-                <p class="card-text" id="carname5"></p>
+                <b><p class="card-text" id="carname5"></p></b>
                 <p class="card-text" id="desc5"></p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -332,7 +332,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer6">
               <div class="card-body">
-                <p class="card-text" id="carname6"></p>
+                <b><p class="card-text" id="carname6"></p></b>
                 <p class="card-text" id="desc6"></p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -350,7 +350,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer7" >
               <div class="card-body">
-                <p class="card-text" id="carname7"></p>
+                <b><p class="card-text" id="carname7"></p></b>
                 <p class="card-text" id="desc7"></p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -367,7 +367,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer8" >
               <div class="card-body">
-                <p class="card-text" id="carname8"></p>
+                <b><p class="card-text" id="carname8"></p></b>
                 <p class="card-text" id="desc8"></p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -384,7 +384,7 @@
             <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
                   xmlns="http://www.w3.org/2000/svg" role="img" id="carContainer9" >
               <div class="card-body">
-                <p class="card-text" id="carname9"></p>
+                <b><p class="card-text" id="carname9"></p></b>
                 <p class="card-text" id="desc9"></p>
                 <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -407,43 +407,6 @@
   </footer>
 </main>
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
-<!--<script>-->
-<!--    // Function to display car image-->
-<!--    async function displayCarImageById(car_id) {-->
-<!--      const response = await fetch(`/getdata/${car_id}`);-->
-<!--      const car = await response.json();-->
-<!--      const carImageContainer = document.getElementById('carImageContainer');-->
-
-<!--      if (car && carImageContainer) {-->
-<!--        carImageContainer.setAttribute('src', car.car_image);-->
-<!--        carImageContainer.setAttribute('alt', 'Car Image');-->
-<!--      }-->
-<!--    }-->
-
-<!--    // Call the displayCarImageById function when the page loads-->
-<!--    displayCarImageById(1);-->
-<!--  </script>-->
-
-<!--<script>-->
-<!--  async function displayCar() {-->
-<!--    const response = await fetch('/getdata');-->
-<!--    const data = await response.json();-->
-
-<!--    const carImageContainer = document.getElementById('carImageContainer');-->
-
-<!--    if (data.results && data.results.length > 0) {-->
-<!--      const firstCar = data.results[0];-->
-<!--      const imageUrl = firstCar.car_image;-->
-
-<!--      carImageContainer.src = imageUrl;-->
-<!--      carImageContainer.alt = 'Car Image';-->
-<!--    } else {-->
-<!--      console.error('No car data available.');-->
-<!--    }-->
-<!--  }-->
-
-<!--  displayCar();-->
-<!--</script>-->
 
 <script>
   async function displayCar(car_id, containerId, carname, descId, price, but) {
@@ -460,7 +423,7 @@
     if (data.results && data.results.length > 0) {
       const firstCar = data.results[car_id];
       const imageUrl = firstCar.car_image;
-      const carn_ame = firstCar.makename + " " + firstCar.car_model;
+      const carn_ame = firstCar.car_year + " " + firstCar.makename + " " + firstCar.car_model;
       const cardesc = firstCar.car_desc;
       const pricecar = firstCar.car_price;
       const carID = firstCar.car_id;

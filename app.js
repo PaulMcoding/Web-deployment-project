@@ -52,7 +52,6 @@ app.get('/getdata', async (req, res) => {
   }
 });
 
-//database manipulation routes
 app.post('/getdetails', async (req, res) => {
   try {
     const carid = req.body.carID;
