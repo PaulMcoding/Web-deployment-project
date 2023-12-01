@@ -69,10 +69,24 @@ app.get('/details', (req, res) => {
   }
 });
 app.get('/album', (req, res) => {
-  if (req.session.user) {
-    res.sendFile(__dirname + '/Project Files/car.html');
-  } else {
-    res.redirect('/signin');
+if (req.session.user) {
+  res.redirect('/');
+} else {
+  res.redirect('/signin');
+}
+});
+//User signing in routes
+app.post('/signup', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    client = await pool.connect();
+    const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
+    hashedPassword]);
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);
   }
 });
 
@@ -83,25 +97,24 @@ app.get('/', (req, res) => {
 app.post('/signin', async (req, res) => {
   var { email, password } = req.body;
   try {
-    var result = await pool.query('SELECT * FROM webusers WHERE user_email = $1', [email]);
+    const result = await pool.query('SELECT * FROM webusers WHERE user_email = $1', [email]);
+
     if (result.rows.length === 1) {
-      var hashedPassword = result.rows[0].user_pass;
-      console.log('Hashed Password from Database:', hashedPassword);
-      var passwordMatch = await bcrypt.compare(password, hashedPassword);
+      const hashedPassword = result.rows[0].user_pass;
+      const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
       if (passwordMatch) {
-        req.session.user = { user_email: email };
-        console.log('Session created:', req.session.user);
-        res.redirect('/');
+        req.session.user = { username: email };
+        return res.redirect('/');
       } else {
-        res.redirect('/signin')
+        return res.status(401).send('Invalid password');
       }
     } else {
-      res.redirect('/signin')
+      return res.status(401).send('Invalid username');
     }
   } catch (error) {
     console.error('Error querying the database:', error);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
 });
 
@@ -234,7 +247,20 @@ app.post('/update', async (req, res) => {
   }
 });
 
-
+app.post('/messageSeller', async (req, res) => {
+  try {
+    res.header('Content-Type', 'application/json');
+    const{userID, carID, sellerID, message, carName} = req.body
+    const messageResult = 
+    pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
+    console.log("Sent Message to seller about car: " + carName);
+    res.json({ message: "Sent Message to seller about car: " + carName });
+  }
+  catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);}
+  }
+)
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');
