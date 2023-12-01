@@ -146,7 +146,7 @@ app.post('/signup', async (req, res) => {
     const { email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     client = await pool.connect();
-    const result = await client.query('INSERT INTO webusers (email, u_pass) VALUES ($1, $2) RETURNING id', [email,
+    const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
     hashedPassword]);
     res.redirect('/');
   } catch (err) {
@@ -154,7 +154,6 @@ app.post('/signup', async (req, res) => {
     res.status(500).send("Error " + err);
   }
 });
-
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');
