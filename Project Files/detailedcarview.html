@@ -276,7 +276,6 @@
 <script>
   async function sendMessage() {
   try {
-    const uIn = 1;
     const carID = +urlParams.get('carID'); // Convert to number
     var carName = document.getElementById('carname1').innerText;
     const messageContent = `I am interested in the car: ${carName}`;
@@ -284,7 +283,6 @@
     const detail = document.getElementById('carname1').innerText;
 
     const postData = {
-      userID: uIn,
       carID: carID,
       sellerID: sellerID,
       message: messageContent,

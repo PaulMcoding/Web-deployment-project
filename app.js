@@ -20,57 +20,60 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//// Pauls Connection
-//var pool = new Pool({
-//user: 'paul',
-//host: 'localhost',
-//database: 'postgres',
-//password: 'password',
-//port: 54321
-//});
+// Other middleware and route handlers
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//  Williams Connection
-  var pool = new Pool({
-    user: 'BUILDER', // PostgreSQL database username
-    host: 'localhost', // PostgreSQL database host
-    database: 'postgres', // PostgreSQL database name
-    password: 'cls2', // PostgreSQL database password
-    port: 54321 // PostgreSQL database port
-  });
+// Your routes...
+
+// Pauls Connection
+var pool = new Pool({
+user: 'paul',
+host: 'localhost',
+database: 'postgres',
+password: 'password',
+port: 54321
+});
+
+// //  Williams Connection
+//   var pool = new Pool({
+//     user: 'BUILDER', // PostgreSQL database username
+//     host: 'localhost', // PostgreSQL database host
+//     database: 'postgres', // PostgreSQL database name
+//     password: 'cls2', // PostgreSQL database password
+//     port: 54321 // PostgreSQL database port
+//   });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
 app.get('/checkout', (req, res) => {
-  if (req.session.user) {
+  if (req.session.username) {
     res.sendFile(__dirname + '/Project Files/checkout.html');
   } else {
     res.redirect('/signin');
   }
 });
 app.get('/signin', (req, res) => {
-  if (req.session.user) {
+  if (req.session.username) {
     res.sendFile(__dirname + '/Project Files/signin.html');
   } else {
     res.sendFile(__dirname + '/Project Files/signin.html');
   }
 });
 app.get('/signup', (req, res) => {
-  if (req.session.user) {
+  if (req.session.username) {
     res.sendFile(__dirname + '/Project Files/signup.html');
   } else {
     res.sendFile(__dirname + '/Project Files/signup.html');
   }
 });
 app.get('/details', (req, res) => {
-  if (req.session.user) {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
-  } else {
-    res.redirect('/signin');
-  }
-});
+  });
+
 app.get('/album', (req, res) => {
-if (req.session.user) {
-  res.redirect('/');
+if (req.session.username) {
+  res.sendFile(__dirname + '/Project Files/car.html');
 } else {
   res.redirect('/signin');
 }
@@ -101,10 +104,12 @@ app.post('/signin', async (req, res) => {
 
     if (result.rows.length === 1) {
       const hashedPassword = result.rows[0].user_pass;
+      const uID = result.rows[0].user_id;
       const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
       if (passwordMatch) {
-        req.session.user = { username: email };
+        req.session.username = email;
+        req.session.userID = uID;
         return res.redirect('/');
       } else {
         return res.status(401).send('Invalid password');
@@ -250,7 +255,10 @@ app.post('/update', async (req, res) => {
 app.post('/messageSeller', async (req, res) => {
   try {
     res.header('Content-Type', 'application/json');
-    const{userID, carID, sellerID, message, carName} = req.body
+    const{carID, sellerID, message, carName} = req.body
+    const userID = req.session.userID;
+
+    console.log(userID, carID, sellerID, message, carName);
     const messageResult = 
     pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
     console.log("Sent Message to seller about car: " + carName);
