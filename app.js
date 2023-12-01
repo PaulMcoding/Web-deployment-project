@@ -19,23 +19,23 @@ app.use(session({
 
 app.use(express.json());
 
-////// Pauls Connection
-//var pool = new Pool({
-// user: 'paul',
-// host: 'localhost',
-// database: 'postgres',
-// password: 'password',
-// port: 54321
-//});
+//// Pauls Connection
+var pool = new Pool({
+user: 'paul',
+host: 'localhost',
+database: 'postgres',
+password: 'password',
+port: 54321
+});
 
  // Williams Connection
- var pool = new Pool({
-   user: 'BUILDER', // PostgreSQL database username
-   host: 'localhost', // PostgreSQL database host
-   database: 'postgres', // PostgreSQL database name
-   password: 'cls2', // PostgreSQL database password
-   port: 54321 // PostgreSQL database port
- });
+//  var pool = new Pool({
+//    user: 'BUILDER', // PostgreSQL database username
+//    host: 'localhost', // PostgreSQL database host
+//    database: 'postgres', // PostgreSQL database name
+//    password: 'cls2', // PostgreSQL database password
+//    port: 54321 // PostgreSQL database port
+//  });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -45,27 +45,48 @@ app.get('/signin', (req, res) => {res.sendFile(__dirname + '/Project Files/signi
 app.get('/signup', (req, res) => {res.sendFile(__dirname + '/Project Files/signup.html');});
 app.get('/details', (req, res) => {res.sendFile(__dirname + '/Project Files/detailedcarview.html');});
 app.get('/album', (req, res) => {
-  if (req.session.user) {
-    res.sendFile(__dirname + '/Project Files/car.html');
-  } else {
-    res.redirect('/signin');
+if (req.session.user) {
+  res.redirect('/');
+} else {
+  res.redirect('/signin');
+}
+});
+//User signing in routes
+app.post('/signup', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    client = await pool.connect();
+    const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
+    hashedPassword]);
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);
   }
 });
 
 app.post('/signin', async (req, res) => {
   var { email, password } = req.body;
   try {
-    const result = await pool.query('SELECT * FROM webusers WHERE user_email = $1 AND user_pass = $2', [email, password]);
+    const result = await pool.query('SELECT * FROM webusers WHERE user_email = $1', [email]);
 
     if (result.rows.length === 1) {
-      req.session.user = { username: email };
-      res.redirect('/');
+      const hashedPassword = result.rows[0].user_pass;
+      const passwordMatch = await bcrypt.compare(password, hashedPassword);
+
+      if (passwordMatch) {
+        req.session.user = { username: email };
+        return res.redirect('/');
+      } else {
+        return res.status(401).send('Invalid password');
+      }
     } else {
-      res.send('Invalid username or password');
+      return res.status(401).send('Invalid username');
     }
   } catch (error) {
     console.error('Error querying the database:', error);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
 });
 
@@ -174,21 +195,20 @@ app.post('/update', async (req, res) => {
   }
 });
 
-//User signing in routes
-app.post('/signup', async (req, res) => {
+app.post('/messageSeller', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    client = await pool.connect();
-    const result = await client.query('INSERT INTO webusers (email, u_pass) VALUES ($1, $2) RETURNING id', [email,
-    hashedPassword]);
-    res.redirect('/');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error " + err);
+    res.header('Content-Type', 'application/json');
+    const{userID, carID, sellerID, message, carName} = req.body
+    const messageResult = 
+    pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
+    console.log("Sent Message to seller about car: " + carName);
+    res.json({ message: "Sent Message to seller about car: " + carName });
   }
-});
-
+  catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);}
+  }
+)
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');
