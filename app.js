@@ -46,7 +46,7 @@ app.get('/signup', (req, res) => {res.sendFile(__dirname + '/Project Files/signu
 app.get('/details', (req, res) => {res.sendFile(__dirname + '/Project Files/detailedcarview.html');});
 app.get('/album', (req, res) => {
   if (req.session.user) {
-    res.sendFile(__dirname + '/Project Files/car.html');
+    res.redirect('/');
   } else {
     res.redirect('/signin');
   }
@@ -55,17 +55,27 @@ app.get('/album', (req, res) => {
 app.post('/signin', async (req, res) => {
   var { email, password } = req.body;
   try {
-    const result = await pool.query('SELECT * FROM webusers WHERE user_email = $1 AND user_pass = $2', [email, password]);
+    const result = await pool.query('SELECT * FROM webusers WHERE user_email = $1', [email]);
+    console.log(result);
 
     if (result.rows.length === 1) {
-      req.session.user = { username: email };
-      res.redirect('/');
+      const hashedPassword = result.rows[0].user_pass;
+      const passwordMatch = await bcrypt.compare(password, hashedPassword);
+      console.log(passwordMatch);
+
+      if (passwordMatch) {
+        req.session.user = { username: email };
+        // res.redirect('/');
+        res.send("Signed in, valid details");
+      } else {
+        return res.send('Invalid password');
+      }
     } else {
-      res.send('Invalid username or password');
+      return res.send('Invalid username');
     }
   } catch (error) {
     console.error('Error querying the database:', error);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
 });
 
