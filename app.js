@@ -79,6 +79,7 @@ app.post('/delete', async (req, res) => {
     await client.query('DELETE FROM car WHERE car_id = $1', [id]);
     const result = await client.query('SELECT * FROM car join make using(makeid)');
     const results = { 'results': (result) ? result.rows : null };
+    console.log("Deleted Car with ID: " + id);
     res.send({ message: "Remaining results", results: results });
     client.release();
   } catch (err) {
@@ -108,6 +109,7 @@ app.post('/add', async (req, res) => {
     const carId = result.rows[0].car_id;
     const queryResult = await client.query('SELECT * FROM car join make using(makeid) WHERE car_id = $1', [carId]);
     const newCar = (queryResult) ? queryResult.rows[0] : null;
+    console.log("Added car: " + newCar);
     res.json({ message: "New Car Added", car: newCar });
     client.release();
   } catch (err) {
@@ -132,6 +134,7 @@ app.post('/update', async (req, res) => {
     }
     const queryResult = await client.query('SELECT * FROM car join make using(makeid) WHERE car_id = $1', [id]);
     const updatedCar = (queryResult) ? queryResult.rows[0] : null;
+    console.log("Updated Car " + updatedCar)
     res.json({ message: "Updated Car", car: updatedCar });
     client.release();
   } catch (err) {
@@ -139,6 +142,21 @@ app.post('/update', async (req, res) => {
     res.status(500).send("Error " + err);
   }
 });
+
+app.post('/messageSeller', async (req, res) => {
+  try {
+    res.header('Content-Type', 'application/json');
+    const{userID, carID, sellerID, message, carName} = req.body
+    const messageResult = 
+    pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
+    console.log("Sent Message to seller about car: " + carName);
+    res.json({ message: "Sent Message to seller about car: " + carName });
+  }
+  catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);}
+  }
+)
 
 //User signing in routes
 app.post('/signup', async (req, res) => {

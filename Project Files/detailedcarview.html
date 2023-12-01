@@ -204,8 +204,8 @@
                   <small class="text-body-secondary" id="location1"></small>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Message Seller</button>
-                      <a href="checkout" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
+                      <button type="button" id="message" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Message Seller</button>
+                      <a type="button" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
                     </div>
                     <small class="text-body-secondary" id="price1"></small>
                   </div>
@@ -225,6 +225,8 @@
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  const urlParams = new URLSearchParams(window.location.search);
+
   async function displayCar(car_id, containerId, carname, descId, price, location, miles) {
     const response = await fetch(`/getdetails`, {
       method: 'POST',
@@ -265,12 +267,62 @@
     }
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
   const carID = urlParams.get('carID');
 
   displayCar(carID, 'carContainer1', 'carname1', 'desc1', 'price1', 'location1', 'miles1');
 
 </script>
+  
+<script>
+  async function sendMessage() {
+  try {
+    const uIn = 1;
+    const carID = +urlParams.get('carID'); // Convert to number
+    var carName = document.getElementById('carname1').innerText;
+    const messageContent = `I am interested in the car: ${carName}`;
+    const sellerID = 2;
+    const detail = document.getElementById('carname1').innerText;
+
+    const postData = {
+      userID: uIn,
+      carID: carID,
+      sellerID: sellerID,
+      message: messageContent,
+      carName: detail,
+    };
+
+    const response = await fetch('/messageSeller', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok - Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Message sent successfully:', data);
+    return data; // Resolve the promise with the response data
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    throw error; // Reject the promise with the error
+  }
+}
+
+document.getElementById('message').addEventListener('click', async function () {
+  try {
+    const result = await sendMessage();
+    console.log('Result:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+</script>
+
 
     </body>
 </html>

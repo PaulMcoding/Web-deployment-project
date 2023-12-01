@@ -1,11 +1,13 @@
+drop table favourite;
+drop table webseller;
 drop table car; 
 drop table webusers;
-drop table make cascade;
+drop table make;
 
 CREATE TABLE webusers (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    u_pass VARCHAR(255) NOT NULL
+    user_id SERIAL PRIMARY KEY,
+    user_email VARCHAR(255) NOT NULL,
+    user_pass VARCHAR(255) NOT null
 );
 
 create table make (
@@ -15,15 +17,32 @@ makename varchar(100)
 
 CREATE TABLE car (
 	car_id SERIAL PRIMARY KEY,
-    makeid     int references make(makeid),
+    makeid       int references make(makeid),
+    seller_id    int references webusers(user_id),
     car_model    VARCHAR(20) NOT NULL,
     car_price    numeric(9, 2) NOT NULL,
     car_year     VARCHAR(4) NOT NULL,
     car_miles    VARCHAR(8) NOT NULL,
     car_location VARCHAR(100) NOT NULL,
-    car_desc   varchar(250) NOT NULL,
+    car_desc     varchar(250) NOT NULL,
     car_image    VARCHAR(1000) NOT NULL
 );
+
+create table favourite(
+	user_id int references webusers(user_id),
+	car_model int references car(car_id)
+);
+
+create table webseller(
+	seller_id int references webusers(user_id),
+	user_id int references webusers(user_id),
+	car_id int references car(car_id),
+	seller_message varchar(250)
+);
+
+
+insert into webusers(user_email, user_pass) values ('NewBuyer@gmail.com', 'NewBuyer');
+insert into webusers(user_email, user_pass) values ('NewSeller@gmail.com', 'NewSeller');
 
 insert into make(makename) values('Honda');
 insert into make(makename) values('Nissan');
@@ -66,5 +85,6 @@ values(9, 'N Vision 74', 198000.00, '2025', '0', 'SEMA, Las Vegas', 'A new car t
 select * from car;
 select * from make;
 select * from webusers;
+select * from webseller;
 
 SELECT * FROM car left join make using(makeid);
