@@ -56,28 +56,26 @@ app.post('/signin', async (req, res) => {
   var { email, password } = req.body;
   try {
     const result = await pool.query('SELECT * FROM webusers WHERE user_email = $1', [email]);
-    console.log(result);
 
     if (result.rows.length === 1) {
       const hashedPassword = result.rows[0].user_pass;
       const passwordMatch = await bcrypt.compare(password, hashedPassword);
-      console.log(passwordMatch);
 
       if (passwordMatch) {
         req.session.user = { username: email };
-        // res.redirect('/');
-        res.send("Signed in, valid details");
+        return res.redirect('/');
       } else {
-        return res.send('Invalid password');
+        return res.status(401).send('Invalid password');
       }
     } else {
-      return res.send('Invalid username');
+      return res.status(401).send('Invalid username');
     }
   } catch (error) {
     console.error('Error querying the database:', error);
     return res.status(500).send('Internal Server Error');
   }
 });
+
 
 //User signing in routes
 app.post('/signup', async (req, res) => {
