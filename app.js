@@ -19,23 +19,23 @@ app.use(session({
 
 app.use(express.json());
 
-////// Pauls Connection
-//var pool = new Pool({
-// user: 'paul',
-// host: 'localhost',
-// database: 'postgres',
-// password: 'password',
-// port: 54321
-//});
+//// Pauls Connection
+var pool = new Pool({
+user: 'paul',
+host: 'localhost',
+database: 'postgres',
+password: 'password',
+port: 54321
+});
 
  // Williams Connection
- var pool = new Pool({
-   user: 'BUILDER', // PostgreSQL database username
-   host: 'localhost', // PostgreSQL database host
-   database: 'postgres', // PostgreSQL database name
-   password: 'cls2', // PostgreSQL database password
-   port: 54321 // PostgreSQL database port
- });
+//  var pool = new Pool({
+//    user: 'BUILDER', // PostgreSQL database username
+//    host: 'localhost', // PostgreSQL database host
+//    database: 'postgres', // PostgreSQL database name
+//    password: 'cls2', // PostgreSQL database password
+//    port: 54321 // PostgreSQL database port
+//  });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -66,6 +66,21 @@ app.post('/signin', async (req, res) => {
   } catch (error) {
     console.error('Error querying the database:', error);
     res.status(500).send('Internal Server Error');
+  }
+});
+
+//User signing in routes
+app.post('/signup', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    client = await pool.connect();
+    const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
+    hashedPassword]);
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error " + err);
   }
 });
 
@@ -174,20 +189,6 @@ app.post('/update', async (req, res) => {
   }
 });
 
-//User signing in routes
-app.post('/signup', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    client = await pool.connect();
-    const result = await client.query('INSERT INTO webusers (email, u_pass) VALUES ($1, $2) RETURNING id', [email,
-    hashedPassword]);
-    res.redirect('/');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error " + err);
-  }
-});
 
 
 app.listen(8080, () => {
