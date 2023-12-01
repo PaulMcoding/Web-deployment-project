@@ -3,7 +3,7 @@
     {
       "makeid": 1,
       "car_id": 1,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "Acty",
       "car_price": "6548.99",
       "car_year": "1989",
@@ -16,7 +16,7 @@
     {
       "makeid": 2,
       "car_id": 3,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "Skyline r32",
       "car_price": "64555.99",
       "car_year": "1994",
@@ -29,7 +29,7 @@
     {
       "makeid": 2,
       "car_id": 2,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "180sx",
       "car_price": "23000.00",
       "car_year": "1992",
@@ -42,7 +42,7 @@
     {
       "makeid": 3,
       "car_id": 4,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "M5 Competition",
       "car_price": "64555.99",
       "car_year": "1994",
@@ -55,7 +55,7 @@
     {
       "makeid": 4,
       "car_id": 8,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "GR Corolla",
       "car_price": "37195.00",
       "car_year": "2022",
@@ -68,7 +68,7 @@
     {
       "makeid": 6,
       "car_id": 5,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "Grenadier",
       "car_price": "84500.00",
       "car_year": "2023",
@@ -81,7 +81,7 @@
     {
       "makeid": 7,
       "car_id": 6,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "GT3RS",
       "car_price": "223800.00",
       "car_year": "2021",
@@ -94,7 +94,7 @@
     {
       "makeid": 8,
       "car_id": 7,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "DB9",
       "car_price": "84950.00",
       "car_year": "2015",
@@ -107,7 +107,7 @@
     {
       "makeid": 9,
       "car_id": 9,
-      "seller_id": null,
+      "seller_id": 1,
       "car_model": "N Vision 74",
       "car_price": "198000.00",
       "car_year": "2025",

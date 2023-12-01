@@ -46,6 +46,10 @@ port: 54321
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
 app.get('/checkout', (req, res) => {
   if (req.session.username) {
     res.sendFile(__dirname + '/Project Files/checkout.html');
@@ -54,18 +58,10 @@ app.get('/checkout', (req, res) => {
   }
 });
 app.get('/signin', (req, res) => {
-  if (req.session.username) {
-    res.sendFile(__dirname + '/Project Files/signin.html');
-  } else {
-    res.sendFile(__dirname + '/Project Files/signin.html');
-  }
+  res.sendFile(__dirname + '/Project Files/signin.html');
 });
 app.get('/signup', (req, res) => {
-  if (req.session.username) {
-    res.sendFile(__dirname + '/Project Files/signup.html');
-  } else {
-    res.sendFile(__dirname + '/Project Files/signup.html');
-  }
+  res.sendFile(__dirname + '/Project Files/signup.html');
 });
 app.get('/details', (req, res) => {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
@@ -78,6 +74,7 @@ if (req.session.username) {
   res.redirect('/signin');
 }
 });
+
 //User signing in routes
 app.post('/signup', async (req, res) => {
   try {
@@ -86,15 +83,18 @@ app.post('/signup', async (req, res) => {
     client = await pool.connect();
     const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
     hashedPassword]);
+
+    const uID = result.rows[0].user_id;
+    console.log(uID);
+
+    req.session.username = email;
+    req.session.userID = uID;
+    
     res.redirect('/');
   } catch (err) {
     console.error(err);
     res.status(500).send("Error " + err);
   }
-});
-
-app.get('/', (req, res) => {
-  res.render('index');
 });
 
 app.post('/signin', async (req, res) => {
@@ -120,20 +120,6 @@ app.post('/signin', async (req, res) => {
   } catch (error) {
     console.error('Error querying the database:', error);
     return res.status(500).send('Internal Server Error');
-  }
-});
-
-app.post('/signup', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    client = await pool.connect();
-    const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
-    hashedPassword]);
-    res.redirect('/');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error " + err);
   }
 });
 
@@ -253,22 +239,28 @@ app.post('/update', async (req, res) => {
 });
 
 app.post('/messageSeller', async (req, res) => {
-  try {
-    res.header('Content-Type', 'application/json');
-    const{carID, sellerID, message, carName} = req.body
-    const userID = req.session.userID;
+  if (req.session.username)
+  {
+    try {
+      res.header('Content-Type', 'application/json');
+      const{carID, sellerID, message, carName} = req.body
+      const userID = req.session.userID;
 
-    console.log(userID, carID, sellerID, message, carName);
-    const messageResult = 
-    pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
-    console.log("Sent Message to seller about car: " + carName);
-    res.json({ message: "Sent Message to seller about car: " + carName });
-  }
-  catch (err) {
-    console.error(err);
-    res.status(500).send("Error " + err);}
-  }
-)
+      console.log(userID, carID, sellerID, message, carName);
+      const messageResult = 
+      pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
+      console.log("Sent Message to seller about car: " + carName);
+      res.json({ message: "Sent Message to seller about car: " + carName });
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).send("Error " + err);}
+    }
+  else
+    {
+      res.status(401).send("Login");
+    }
+  })
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');
