@@ -208,6 +208,7 @@
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
   document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('signinForm');
   const errorMessage = document.getElementById('error-message');
@@ -231,7 +232,7 @@
       
       resetError();
       if (response.ok) {
-        // Redirect to the home page or perform other actions
+        alert("You successfully signed in");
         window.location.href = '/';
       } else if (response.status === 401) {
         const responseBody = await response.text();
@@ -239,7 +240,7 @@
           showError('Invalid username. Please try again.');
         } else if (responseBody === 'Invalid password') {
           showError('Invalid password. Please try again.');
-        } else {
+        } else  {
           showError('Failed to sign in. Please try again later.');
         }
       } else {
@@ -251,7 +252,15 @@
     }
   });
 
-  // Function to show the error message and make it visible
+  const urlParams = new URLSearchParams(window.location.search);
+      
+      if(urlParams.get('signedin') == 'no') {
+          showError('Please sign in to access checkout');
+        }
+      else if(urlParams.get('signedin') == 'view') {
+          showError('Please sign in to view cars');
+        }
+
   function showError(message) {
     errorMessage.textContent = message;
     errorMessage.style.display = 'block';

@@ -54,7 +54,7 @@ app.get('/checkout', (req, res) => {
   if (req.session.username) {
     res.sendFile(__dirname + '/Project Files/checkout.html');
   } else {
-    res.redirect('/signin');
+    res.redirect('/signin?signedin=no'); 
   }
 });
 app.get('/signin', (req, res) => {
@@ -71,31 +71,32 @@ app.get('/album', (req, res) => {
 if (req.session.username) {
   res.sendFile(__dirname + '/Project Files/car.html');
 } else {
-  res.redirect('/signin');
+  res.redirect('/signin?signedin=view'); 
 }
 });
 
-//User signing in routes
 app.post('/signup', async (req, res) => {
   try {
     const { email, password } = req.body;
+    const existingUser = await pool.query('SELECT * FROM webusers WHERE user_email = $1', [email]);
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).send('eiu');
+    }
+
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    client = await pool.connect();
-    const result = await client.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email,
-    hashedPassword]);
-
+    const result = await pool.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email, hashedPassword]);
     const uID = result.rows[0].user_id;
-    console.log(uID);
-
     req.session.username = email;
     req.session.userID = uID;
-    
+
     res.redirect('/');
   } catch (err) {
     console.error(err);
     res.status(500).send("Error " + err);
   }
 });
+
 
 app.post('/signin', async (req, res) => {
   var { email, password } = req.body;
@@ -152,7 +153,6 @@ app.get('/getdata', async (req, res) => {
 app.post('/getdetails', async (req, res) => {
   try {
     const carid = req.body.carID;
-    console.log(carid);
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM car join make using(makeid) where car_id = $1', [carid]);
     const results = { 'results': (result) ? result.rows : null };
