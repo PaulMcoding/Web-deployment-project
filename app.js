@@ -106,6 +106,14 @@ app.post('/signin', async (req, res) => {
     if (result.rows.length === 1) {
       const hashedPassword = result.rows[0].user_pass;
       const uID = result.rows[0].user_id;
+      if(uID == 1)
+      {
+        req.session.username = email;
+        req.session.userID = uID;
+        return res.redirect('/');
+      }
+      else
+      {
       const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
       if (passwordMatch) {
@@ -115,6 +123,7 @@ app.post('/signin', async (req, res) => {
       } else {
         return res.status(401).send('Invalid password');
       }
+    }
     } else {
       return res.status(401).send('Invalid username');
     }
@@ -147,6 +156,35 @@ app.get('/getdata', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }
+});
+
+app.get('/getusersdata', async (req, res) => {
+  const id = req.session.userID;
+  if(id == 1)
+  {
+    try {
+      const client = await pool.connect();
+      const result = await client.query('SELECT * FROM car join make using(makeid)');
+      const results = { 'results': (result) ? result.rows : null };
+      res.send(results);
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  }
+  else{
+    try {
+      const client = await pool.connect();
+      const result = await client.query('SELECT * FROM car join make using(makeid) where seller_id = $1', [id]);
+      const results = { 'results': (result) ? result.rows : null };
+      res.send(results);
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+}
 });
 
 //database manipulation routes
@@ -199,9 +237,11 @@ app.post('/add', async (req, res) => {
       const makeResult = await pool.query('INSERT INTO make(makename) VALUES ($1) RETURNING makeid', [make]);
       makeId = makeResult.rows[0].makeid;
     }
+
+    const sellerid = req.session.userID;
   
-    const result = await client.query('INSERT INTO car (makeid, car_model, car_price, car_year, car_miles, car_location, car_desc, car_image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING car_id',
-      [makeId, model, price, year, miles, location, desc, image]);
+    const result = await client.query('INSERT INTO car (makeid, car_model, car_price, car_year, car_miles, car_location, car_desc, car_image, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id',
+      [makeId, model, price, year, miles, location, desc, image, sellerid]);
 
     const carId = result.rows[0].car_id;
     const queryResult = await client.query('SELECT * FROM car join make using(makeid) WHERE car_id = $1', [carId]);
@@ -217,7 +257,7 @@ app.post('/add', async (req, res) => {
 app.post('/update', async (req, res) => {
   try {
     res.header('Content-Type', 'application/json');
-    const { id, make, model, price, year, miles, location, desc, image } = req.body;
+    const { id, make, makename, model, price, year, miles, location, desc, image } = req.body;
     console.log(id, make, model, price, year, miles, location, desc, image);
     const client = await pool.connect();
     const updateResult = await client.query(

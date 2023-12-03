@@ -91,6 +91,11 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
+      .card {
+        display: none;
+      }
+
     </style>
 
     
@@ -419,6 +424,7 @@
     const description = document.getElementById(descId);
     const carPrice = document.getElementById(price);
     const details = document.getElementById(but);
+    const card = document.getElementById(containerId).closest('.card');
 
     if (data.results && data.results.length > 0) {
       const firstCar = data.results[car_id];
@@ -434,7 +440,7 @@
       description.textContent = cardesc;
       carPrice.textContent = "$" + pricecar;
       details.href = "/details?carID="+carID;
-
+      card.style.display = 'block';
     } else {
       console.error(`No car data available for car_id ${car_id}.`);
     }

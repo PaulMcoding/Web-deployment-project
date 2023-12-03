@@ -27,32 +27,6 @@
       "makename": "Nissan"
     },
     {
-      "makeid": 2,
-      "car_id": 2,
-      "seller_id": 1,
-      "car_model": "180sx",
-      "car_price": "23000.00",
-      "car_year": "1992",
-      "car_miles": "142000",
-      "car_location": "Louth",
-      "car_desc": "Perfect drift car",
-      "car_image": "https://powervehicles.com/wp-content/uploads/2022/11/180sx-17.jpg",
-      "makename": "Nissan"
-    },
-    {
-      "makeid": 3,
-      "car_id": 4,
-      "seller_id": 1,
-      "car_model": "M5 Competition",
-      "car_price": "64555.99",
-      "car_year": "1994",
-      "car_miles": "101486",
-      "car_location": "Dublin",
-      "car_desc": "German automitve perfection",
-      "car_image": "https://www.topgear.com/sites/default/files/cars-car/carousel/2020/10/p90403633_highres_bmw-m5-competition.jpg",
-      "makename": "BMW"
-    },
-    {
       "makeid": 4,
       "car_id": 8,
       "seller_id": 1,
@@ -103,19 +77,6 @@
       "car_desc": "Perfect if your a businessman",
       "car_image": "https://assets.newatlas.com/dims4/default/30e5a82/2147483647/strip/true/crop/1280x720+0+31/resize/1200x675!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2Farchive%2Faston-martin-db9-2013.jpg",
       "makename": "Aston Martin"
-    },
-    {
-      "makeid": 9,
-      "car_id": 9,
-      "seller_id": 1,
-      "car_model": "N Vision 74",
-      "car_price": "198000.00",
-      "car_year": "2025",
-      "car_miles": "0",
-      "car_location": "SEMA, Las Vegas",
-      "car_desc": "A new car to the scene with styling from old mixed with new technology of today",
-      "car_image": "https://www.topgear.com/sites/default/files/2023/05/1%20Hyundai%20N%20Vision%2074.jpg",
-      "makename": "Hyundai"
     }
   ]
 }
