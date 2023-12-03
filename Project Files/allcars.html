@@ -184,70 +184,60 @@
 <main>
 
   <!-- Container for the cars -->
-  <div id="carContainer" class="container"></div>
+  <div style="margin-top: 50px;" id="carContainer" class="container"></div>
+
+<script>
+        // Fetch data from the server
+        async function fetchData() {
+      try {
+        const response = await fetch('/getdata');
+        const data = await response.json();
   
-    <!-- FOOTER -->
-    <footer class="container">
-        <p class="float-end"><a href="#">Back to top</a></p>
-        <p>&copy; 2021–2023 PW and Associates &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-      </footer>
-    </main>
-    <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
+        // Dynamically display cars
+        const carContainer = document.getElementById('carContainer');
+        for (let i = 0; i < data.results.length; i++) {
+          displayCar(i, 'carContainer', data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  
+    // Call the fetchData function when the page loads
+    fetchData();
 
-  <script>
-    function displayCar(car_id, containerId, carname, desc, price, buttonId) {
-  // Create a new div element for the car
-  const carContainer = document.getElementById(containerId);
-  const carBox = document.createElement('div');
-  carBox.classList.add('car-box'); // Add a class for styling (you can define styles in CSS)
-
-  // Populate the car box with information
-  carBox.innerHTML = `
-    <div class="card shadow-sm">
-      <img class="bd-placeholder-img card-img-top" width="100%" height="100%"
-        xmlns="http://www.w3.org/2000/svg" role="img" id="carImage${car_id}" alt="Car Image">
-      <div class="card-body">
-        <b><p class="card-text" id="carname${car_id}">${carname}</p></b>
-        <p class="card-text" id="desc${car_id}">${desc}</p>
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="btn-group">
-            <a type="button" class="btn btn-sm btn-outline-secondary" id="${buttonId}"
-              style="color: rgb(135, 218, 135); border-color: green;">View</a>
-            <a href="checkout" class="btn btn-sm btn-outline-secondary"
-              style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
-          </div>
-          <small class="text-body-secondary" id="price${car_id}">${price}</small>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Append the car box to the container
-  carContainer.appendChild(carBox);
-}
-
-
-    // Sample cars data
-    const cars = [
-      { id: 1, name: 'Car 1', description: 'Description 1', price: '$10000' },
-      { id: 2, name: 'Car 2', description: 'Description 2', price: '$12000' },
-      { id: 3, name: 'Car 3', description: 'Description 3', price: '$15000' },
-      // Add more cars as needed
-    ];
-
-    // Dynamically display cars
-    const carContainer = document.getElementById('carContainer');
-    cars.forEach((car, index) => {
-      // Use the index as car_id for simplicity
-      displayCar(index, 'carContainer', car.name, `desc${index + 1}`, car.price, `but${index + 1}`);
-    });
-
-    // Sample function to write data to JSON file (replace with your actual implementation)
-    function writeToJSONFile(data) {
-      console.log('Writing to JSON file:', data);
-      // Add your code to write data to a JSON file here
+    async function displayCar(car_id, containerId, data) {
+      const carContainer = document.getElementById(containerId);
+      const carBox = document.createElement('div');
+      carBox.classList.add('car-box');
+  
+      if (data.results && data.results.length > car_id) {
+        const carData = data.results[car_id];
+        const imageUrl = carData.car_image;
+        const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
+        const carDesc = carData.car_desc;
+        const carPrice = carData.car_price;
+        const carID = carData.car_id;
+  
+        carBox.innerHTML = `
+              <img style="height:100px; widht:100px;" src="${imageUrl}" alt="${car_id}"></img>
+              <p>${carName}</p>
+              <p>${carDesc}</p>
+              <p>carID=${carID}</p>
+              <small">Price: $${carPrice}</small>
+        `;
+  
+        // Append the car box to the container
+        carContainer.appendChild(carBox);
+      } else {
+        console.error(`No car data available for car_id ${car_id}.`);
+      }
     }
   </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
