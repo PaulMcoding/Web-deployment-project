@@ -153,7 +153,7 @@ app.get('/getdata', async (req, res) => {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM car join make using(makeid)');
     const results = { 'results': (result) ? result.rows : null };
-    res.send(results);
+    res.json(results);
     client.release();
   } catch (err) {
     console.error(err);

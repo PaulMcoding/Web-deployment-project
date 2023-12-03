@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -90,10 +91,6 @@
 
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
-      }
-
-      .card {
-        display: none;
       }
 
     </style>
@@ -186,60 +183,67 @@
 
 <main>
 
-  <!-- Container for the cars -->
-  <div class="album py-5 bg-body-tertiary">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="carContainer"></div>
+  <!-- Your HTML content -->
+    <!-- Container for the cars -->
+    <div class="album py-5 bg-body-tertiary">
+      <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="carContainer"></div>
+      </div>
     </div>
-  </div>
 
 <script>
-        // Fetch data from the server
-        async function fetchData() {
-      try {
-        const response = await fetch('/getdata');
-        const data = await response.json();
-  
-        // Dynamically display cars
-        const carContainer = document.getElementById('carContainer');
-        for (let i = 0; i < data.results.length; i++) {
-          displayCar(i, 'carContainer', data);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-  
-    // Call the fetchData function when the page loads
-    fetchData();
+  let scriptExecuted = false;
 
-    async function displayCar(car_id, containerId, data) {
-      const carContainer = document.getElementById(containerId);
-      const carBox = document.createElement('div');
-      carBox.classList.add('car-box');
-  
-      if (data.results && data.results.length > car_id) {
-        const carData = data.results[car_id];
-        const imageUrl = carData.car_image;
-        const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
-        const carDesc = carData.car_desc;
-        const carPrice = carData.car_price;
-        const carID = carData.car_id;
-  
-        carBox.innerHTML = `
-              <img style="height:100px; widht:100px;" src="${imageUrl}" alt="${car_id}"></img>
-              <p>${carName}</p>
-              <p>${carDesc}</p>
-              <small">Price: $${carPrice}</small>
-        `;
-  
-        // Append the car box to the container
-        carContainer.appendChild(carBox);
-      } else {
-        console.error(`No car data available for car_id ${car_id}.`);
-      }
-    }
-  </script>
+  function fetchData() {
+    fetch('/getdata')
+      .then(response => response.json())
+      .then(data => {
+        if (!scriptExecuted) {
+          for (let i = 0; i < data.results.length; i++) {
+            displayCar(i, data.results[i]);
+          }
+          scriptExecuted = true;
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  function displayCar(car_id, carData) {
+    const carContainer = document.getElementById('carContainer');
+    const carBox = document.createElement('div');
+    carBox.classList.add('col');
+
+    const imageUrl = carData.car_image;
+    const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
+    const carDesc = carData.car_desc;
+    const carPrice = carData.car_price;
+    const carID = carData.car_id;
+
+    carBox.innerHTML = `
+      <div class="card shadow-sm">
+        <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="${imageUrl}" alt="${car_id}">
+        <div class="card-body">
+          <b><p class="card-text" id="carname${car_id}">${carName}</p></b>
+          <p class="card-text" id="desc${car_id}">${carDesc} CAR ID=${car_id}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <a type="button" class="btn btn-sm btn-outline-secondary" href="/details?carID=${carData.car_id}" style="color: rgb(135, 218, 135); border-color: green;">View</a>
+              <a href="checkout" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
+            </div>
+            <small class="text-body-secondary" id="price${car_id}">Price: $${carPrice}</small>
+          </div>
+        </div>
+      </div>
+    `;
+
+    carContainer.appendChild(carBox);
+  }
+
+  document.addEventListener('DOMContentLoaded', fetchData);
+</script>
+
 
 </body>
 </html>
