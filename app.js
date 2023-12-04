@@ -146,9 +146,12 @@ app.get('/search', async (req, res) => {
     }
 
     const result = await pool.query(
-      'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1',
+      'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1',
       [`%${query}%`]
     );
+
+    console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
+    console.log('Result:', result.rows);
 
     res.json(result.rows);
   } catch (error) {
