@@ -168,6 +168,19 @@
       "car_desc": "A new car to the scene with styling from old mixed with new technology of today",
       "car_image": "https://www.topgear.com/sites/default/files/2023/05/1%20Hyundai%20N%20Vision%2074.jpg",
       "makename": "Hyundai"
+    },
+    {
+      "makeid": 15,
+      "car_id": 16,
+      "seller_id": 1,
+      "car_model": "Ninja H2R",
+      "car_price": "24500.00",
+      "car_year": "2018",
+      "car_miles": "1900",
+      "car_location": "London",
+      "car_desc": "God Damn",
+      "car_image": "https://storage.kawasaki.eu/public/kawasaki.eu/en-EU/model/17ZX1000Y_US_GY3_RF_C_002.png",
+      "makename": "Kawasaki"
     }
   ]
 }

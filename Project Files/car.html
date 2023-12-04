@@ -362,29 +362,29 @@
 
     // Function to update a car
     async function updateCar() {
-      const updateId = document.getElementById('updateId').value;
-      const modelID = document.getElementById('make2').value;
-      const make = document.getElementById('makename').value;
-      const model = document.getElementById('model2').value;
-      const price = document.getElementById('price2').value;
-      const year = document.getElementById('year2').value;
-      const miles = document.getElementById('miles2').value;
-      const location = document.getElementById('location2').value;
-      const desc = document.getElementById('desc2').value;
-      const image = document.getElementById('image2').value;
+    const updateId = document.getElementById('updateId').value;
+    const modelID = document.getElementById('make2').value; // Corrected variable name
+    const make = document.getElementById('makename').value;
+    const model = document.getElementById('model2').value;
+    const price = document.getElementById('price2').value;
+    const year = document.getElementById('year2').value;
+    const miles = document.getElementById('miles2').value;
+    const location = document.getElementById('location2').value;
+    const desc = document.getElementById('desc2').value;
+    const image = document.getElementById('image2').value;
 
-      const response = await fetch('/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: updateId, makeID, make, model, price, year, miles, location, desc, image }),
-      });
+    const response = await fetch('/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: updateId, modelID, make, model, price, year, miles, location, desc, image }), // Corrected variable name
+    });
 
-      const result = await response.json();
-      console.log(result.message);
-      displayCars();
-    }
+    const result = await response.json();
+    alert(result.message);
+    displayCars();
+  }
 
     // Function to delete a car
     async function deleteCar(id) {

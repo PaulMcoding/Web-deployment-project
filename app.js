@@ -20,23 +20,23 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//// Pauls Connection
-//var pool = new Pool({
-//user: 'paul',
-//host: 'localhost',
-//database: 'postgres',
-//password: 'password',
-//port: 54321
-//});
+// Pauls Connection
+var pool = new Pool({
+user: 'paul',
+host: 'localhost',
+database: 'postgres',
+password: 'password',
+port: 54321
+});
 
- //  Williams Connection
-   var pool = new Pool({
-     user: 'BUILDER', // PostgreSQL database username
-     host: 'localhost', // PostgreSQL database host
-     database: 'postgres', // PostgreSQL database name
-     password: 'cls2', // PostgreSQL database password
-     port: 54321 // PostgreSQL database port
-   });
+//  //  Williams Connection
+//    var pool = new Pool({
+//      user: 'BUILDER', // PostgreSQL database username
+//      host: 'localhost', // PostgreSQL database host
+//      database: 'postgres', // PostgreSQL database name
+//      password: 'cls2', // PostgreSQL database password
+//      port: 54321 // PostgreSQL database port
+//    });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -53,7 +53,7 @@ app.get('/signup', (req, res) => {
 app.get('/details', (req, res) => {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
   });
-  app.get('/mycars', (req, res) => {
+ app.get('/mycars', (req, res) => {
     if (req.session.username) {
       res.sendFile(__dirname + '/Project Files/car.html');
     } else {
@@ -292,12 +292,23 @@ app.post('/add', async (req, res) => {
 app.post('/update', async (req, res) => {
   try {
     res.header('Content-Type', 'application/json');
-    const { id, make, makename, model, price, year, miles, location, desc, image } = req.body;
+    const { id, makeID, make, model, price, year, miles, location, desc, image} = req.body;
     console.log(id, make, model, price, year, miles, location, desc, image);
     const client = await pool.connect();
+    let gotMake;
+
+    const makeCheck = await client.query('Select * from make where makeid = $1', [makeID])
+
+    if (makeCheck.rows.length > 0) {
+      gotMake = makeCheck.rows[0].makeid;
+    } else {
+      const makeResult = await pool.query('INSERT INTO make(makename) VALUES ($1) RETURNING makeid', [make]);
+      gotMake = makeResult.rows[0].makeid;
+    }
+
     const updateResult = await client.query(
       'UPDATE car SET makeid = $1, car_model = $2, car_price = $3, car_year = $4, car_miles = $5, car_location = $6, car_desc = $7, car_image = $8 WHERE car_id = $9 RETURNING car_id',
-      [make, model, price, year, miles, location, desc, image, id]
+      [gotMake, model, price, year, miles, location, desc, image, id]
     );
     if (updateResult.rows.length === 0) {
       res.status(404).send({ message: "No car found for the given car_id" });
