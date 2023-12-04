@@ -195,20 +195,26 @@
   let scriptExecuted = false;
 
   function fetchData() {
-    fetch('/getdata')
-      .then(response => response.json())
-      .then(data => {
-        if (!scriptExecuted) {
-          for (let i = 0; i < data.results.length; i++) {
-            displayCar(i, data.results[i]);
-          }
-          scriptExecuted = true;
+  const searchQuery = new URLSearchParams(window.location.search).get('query');
+
+  const apiUrl = searchQuery ? `/getdata?query=${encodeURIComponent(searchQuery)}` : '/getdata';
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (!scriptExecuted) {
+        for (let i = 0; i < data.results.length; i++) {
+          displayCar(i, data.results[i]);
         }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
+        scriptExecuted = true;
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', fetchData);
 
   function displayCar(car_id, carData) {
     const carContainer = document.getElementById('carContainer');

@@ -153,7 +153,8 @@ app.get('/search', async (req, res) => {
     console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
     console.log('Result:', result.rows);
 
-    res.json(result.rows);
+    // Redirect to allcars.html with the search term as a query parameter
+    res.redirect(`/allcars.html?query=${encodeURIComponent(query)}`);
   } catch (error) {
     console.error('Error executing search query:', error);
     res.status(500).json({ error: 'Internal Server Error' });
