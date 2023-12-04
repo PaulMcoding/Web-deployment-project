@@ -20,12 +20,6 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Other middleware and route handlers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Your routes...
-
 // Pauls Connection
 var pool = new Pool({
 user: 'paul',
@@ -49,13 +43,6 @@ app.use(express.static(path.join(__dirname, 'Project Files')));
 
 app.get('/', (req, res) => {
   res.render('index');
-});
-app.get('/checkout', (req, res) => {
-  if (req.session.username) {
-    res.sendFile(__dirname + '/Project Files/checkout.html');
-  } else {
-    res.redirect('/signin?signedin=no'); 
-  }
 });
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signin.html');
@@ -88,7 +75,8 @@ app.post('/signup', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const result = await pool.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', [email, hashedPassword]);
+    const result = await pool.query('INSERT INTO webusers (user_email, user_pass) VALUES ($1, $2) RETURNING user_id', 
+    [email, hashedPassword]);
     const uID = result.rows[0].user_id;
     req.session.username = email;
     req.session.userID = uID;
@@ -291,7 +279,8 @@ app.post('/messageSeller', async (req, res) => {
 
       console.log(userID, carID, sellerID, message, carName);
       const messageResult = 
-      pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', [sellerID, carID, userID, message]);
+      pool.query('INSERT INTO webseller(seller_id, car_id, user_id, seller_message) VALUES ($1, $2, $3, $4)', 
+      [sellerID, carID, userID, message]);
       console.log("Sent Message to seller about car: " + carName);
       res.json({ message: "Sent Message to seller about car: " + carName });
     }

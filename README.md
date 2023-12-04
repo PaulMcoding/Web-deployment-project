@@ -16,10 +16,26 @@ ALL FILES:
     index.html
         show first 9 cars, if some that are showing are deleted they will be updated with new cars from DB
     signin.html
-        Sign in 🤷‍♂️
+        Sign in
     signup.html
-        Sign up 🤷‍♂️
+        Sign up
     app.js
         All backend routes
     Car.json
         just a JSON readout of all cars in DB
+
+
+interact with a database with
+	[10] authentication mechanism <-- sessions with puplic and private pages ✅
+	[10] CRUD ✅
+	[10] asynchronous communicaton ❓
+	[10] data consumption from a REST API ✅
+[10] responsive mobile first design ✅
+[10] code security ❓
+[10] design patters, code quality ✅+❓
+[10] considering UX ✅
+node.js ✅
+add dianaferreiraTUDublin and cindytudublin as a collaborator ✅+❓
+Any external code snippets must be properly acknowledged (for example with comments in the code) ✅+❓
+[5] Advanced search and filter mechanism ❓
+Currently [60/85]
