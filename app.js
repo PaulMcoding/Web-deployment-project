@@ -148,14 +148,13 @@ app.get('/search', async (req, res) => {
     } else {
       // If there is a query, perform a search based on the query
       result = await pool.query(
-        'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1',
-        [`%${query}%`]
+        'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_year = $2',
+        [`%${query}%`, query]
       );
 
-      console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
+      console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '${query}' OR make.makename ILIKE '${query} OR car.car_year ILIKE ${query}`);
     }
 
-    console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
     console.log('Result:', result.rows);
 
     res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
@@ -174,8 +173,8 @@ app.get('/getdata', async (req, res) => {
 
     if (searchQuery) {
       query = {
-        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1',
-        values: [`%${searchQuery}%`],
+        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1 OR car_year = $2',
+        values: [`%${searchQuery}%`, searchQuery],
       };
     } else {
       query = {
