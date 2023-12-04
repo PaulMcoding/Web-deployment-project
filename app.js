@@ -53,7 +53,7 @@ app.get('/signup', (req, res) => {
 app.get('/details', (req, res) => {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
   });
-  app.get('/mycars', (req, res) => {
+ app.get('/mycars', (req, res) => {
     if (req.session.username) {
       res.sendFile(__dirname + '/Project Files/car.html');
     } else {
