@@ -195,22 +195,31 @@
   let scriptExecuted = false;
 
   function fetchData() {
-    fetch('/getdata')
-      .then(response => response.json())
-      .then(data => {
-        if (!scriptExecuted) {
-          for (let i = 0; i < data.results.length; i++) {
-            displayCar(i, data.results[i]);
+    const searchQuery = new URLSearchParams(window.location.search).get('query');
+
+    if (searchQuery) {
+      fetch(`/getdata?query=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (!scriptExecuted) {
+            const carContainer = document.getElementById('carContainer');
+
+            // Clear existing content
+            carContainer.innerHTML = '';
+
+            for (let i = 0; i < data.results.length; i++) {
+              displayCar(i, data.results[i]);
+            }
+            scriptExecuted = true;
           }
-          scriptExecuted = true;
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
   }
 
-document.addEventListener('DOMContentLoaded', fetchData);
+  document.addEventListener('DOMContentLoaded', fetchData);
 
   function displayCar(car_id, carData) {
     const carContainer = document.getElementById('carContainer');
@@ -242,9 +251,8 @@ document.addEventListener('DOMContentLoaded', fetchData);
 
     carContainer.appendChild(carBox);
   }
-
-  document.addEventListener('DOMContentLoaded', fetchData);
 </script>
+
 
 
 </body>

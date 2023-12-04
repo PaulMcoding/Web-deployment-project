@@ -154,7 +154,7 @@ app.get('/search', async (req, res) => {
     console.log('Result:', result.rows);
 
     // Redirect to allcars.html with the search term as a query parameter
-    res.redirect(`/allcars.html?query=${encodeURIComponent(query)}`);
+    res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
   } catch (error) {
     console.error('Error executing search query:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -165,7 +165,23 @@ app.get('/search', async (req, res) => {
 app.get('/getdata', async (req, res) => {
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM car join make using(makeid)');
+    const searchQuery = req.query.query;
+    let query;
+
+    if (searchQuery) {
+      // If there's a search query, filter based on car_model or makename
+      query = {
+        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1',
+        values: [`%${searchQuery}%`],
+      };
+    } else {
+      // If no search query, get all data
+      query = {
+        text: 'SELECT * FROM car JOIN make USING (makeid)',
+      };
+    }
+
+    const result = await client.query(query);
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
     client.release();
