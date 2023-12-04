@@ -20,23 +20,23 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//// Pauls Connection
-//var pool = new Pool({
-//user: 'paul',
-//host: 'localhost',
-//database: 'postgres',
-//password: 'password',
-//port: 54321
-//});
+// Pauls Connection
+var pool = new Pool({
+user: 'paul',
+host: 'localhost',
+database: 'postgres',
+password: 'password',
+port: 54321
+});
 
-  //  Williams Connection
-    var pool = new Pool({
-      user: 'BUILDER', // PostgreSQL database username
-      host: 'localhost', // PostgreSQL database host
-      database: 'postgres', // PostgreSQL database name
-      password: 'cls2', // PostgreSQL database password
-      port: 54321 // PostgreSQL database port
-    });
+  // //  Williams Connection
+  //   var pool = new Pool({
+  //     user: 'BUILDER', // PostgreSQL database username
+  //     host: 'localhost', // PostgreSQL database host
+  //     database: 'postgres', // PostgreSQL database name
+  //     password: 'cls2', // PostgreSQL database password
+  //     port: 54321 // PostgreSQL database port
+  //   });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -142,15 +142,19 @@ app.get('/search', async (req, res) => {
     const { query } = req.query;
 
     if (!query) {
-      res.redirect('/allcars.html')
+      // If the query is empty, simulate a search for all cars
+      result = await pool.query('SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid');
+      console.log('All Cars Result:', result.rows);
+    } else {
+      // If there is a query, perform a search based on the query
+      result = await pool.query(
+        'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_year = $2',
+        [`%${query}%`, query]
+      );
+
+      console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '${query}' OR make.makename ILIKE '${query} OR car.car_year ILIKE ${query}`);
     }
 
-    const result = await pool.query(
-      'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1',
-      [`%${query}%`]
-    );
-
-    console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
     console.log('Result:', result.rows);
 
     res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
@@ -169,8 +173,8 @@ app.get('/getdata', async (req, res) => {
 
     if (searchQuery) {
       query = {
-        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1',
-        values: [`%${searchQuery}%`],
+        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1 OR car_year = $2',
+        values: [`%${searchQuery}%`, searchQuery],
       };
     } else {
       query = {
