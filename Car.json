@@ -97,7 +97,7 @@
       "seller_id": 1,
       "car_model": "M5 Competition",
       "car_price": "64555.99",
-      "car_year": "1994",
+      "car_year": "2019",
       "car_miles": "101486",
       "car_location": "Dublin",
       "car_desc": "German automitve perfection",
@@ -168,19 +168,6 @@
       "car_desc": "A new car to the scene with styling from old mixed with new technology of today",
       "car_image": "https://www.topgear.com/sites/default/files/2023/05/1%20Hyundai%20N%20Vision%2074.jpg",
       "makename": "Hyundai"
-    },
-    {
-      "makeid": 12,
-      "car_id": 14,
-      "seller_id": 2,
-      "car_model": "H2R",
-      "car_price": "24500.00",
-      "car_year": "2018",
-      "car_miles": "1900",
-      "car_location": "London",
-      "car_desc": "God Damn",
-      "car_image": "https://mcn-images.bauersecure.com/wp-images/4331/1ninjah2r2.jpg",
-      "makename": "Ninja"
     }
   ]
 }
