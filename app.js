@@ -142,18 +142,22 @@ app.get('/search', async (req, res) => {
     const { query } = req.query;
 
     if (!query) {
-      return res.status(400).json({ error: 'Query parameter is missing' });
-    }
+      // If the query is empty, simulate a search for all cars
+      result = await pool.query('SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid');
+      console.log('All Cars Result:', result.rows);
+    } else {
+      // If there is a query, perform a search based on the query
+      result = await pool.query(
+        'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1',
+        [`%${query}%`]
+      );
 
-    const result = await pool.query(
-      'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1',
-      [`%${query}%`]
-    );
+      console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
+    }
 
     console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
     console.log('Result:', result.rows);
 
-    // Redirect to allcars.html with the search term as a query parameter
     res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
   } catch (error) {
     console.error('Error executing search query:', error);
@@ -169,13 +173,11 @@ app.get('/getdata', async (req, res) => {
     let query;
 
     if (searchQuery) {
-      // If there's a search query, filter based on car_model or makename
       query = {
         text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1',
         values: [`%${searchQuery}%`],
       };
     } else {
-      // If no search query, get all data
       query = {
         text: 'SELECT * FROM car JOIN make USING (makeid)',
       };
