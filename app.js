@@ -141,9 +141,12 @@ app.get('/search', async (req, res) => {
   try {
     const { query } = req.query;
 
-    // Query to search for cars or models in the database
+    if (!query) {
+      return res.status(400).json({ error: 'Query parameter is missing' });
+    }
+
     const result = await pool.query(
-      'SELECT * FROM car WHERE makename ILIKE $1 OR car_model ILIKE $1',
+      'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1',
       [`%${query}%`]
     );
 
@@ -153,6 +156,7 @@ app.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.get('/getdata', async (req, res) => {
   try {
