@@ -20,23 +20,23 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Pauls Connection
-var pool = new Pool({
-user: 'paul',
-host: 'localhost',
-database: 'postgres',
-password: 'password',
-port: 54321
-});
+//// Pauls Connection
+//var pool = new Pool({
+//user: 'paul',
+//host: 'localhost',
+//database: 'postgres',
+//password: 'password',
+//port: 54321
+//});
 
-// //  Williams Connection
-//   var pool = new Pool({
-//     user: 'BUILDER', // PostgreSQL database username
-//     host: 'localhost', // PostgreSQL database host
-//     database: 'postgres', // PostgreSQL database name
-//     password: 'cls2', // PostgreSQL database password
-//     port: 54321 // PostgreSQL database port
-//   });
+ //  Williams Connection
+   var pool = new Pool({
+     user: 'BUILDER', // PostgreSQL database username
+     host: 'localhost', // PostgreSQL database host
+     database: 'postgres', // PostgreSQL database name
+     password: 'cls2', // PostgreSQL database password
+     port: 54321 // PostgreSQL database port
+   });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -136,6 +136,24 @@ app.get('/logout', (req, res) => {
 });
 
 //database manipulation routes
+
+app.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    // Query to search for cars or models in the database
+    const result = await pool.query(
+      'SELECT * FROM car WHERE makename ILIKE $1 OR car_model ILIKE $1',
+      [`%${query}%`]
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error executing search query:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.get('/getdata', async (req, res) => {
   try {
     const client = await pool.connect();
