@@ -292,12 +292,23 @@ app.post('/add', async (req, res) => {
 app.post('/update', async (req, res) => {
   try {
     res.header('Content-Type', 'application/json');
-    const { id, makeID, make, model, price, year, miles, location, desc, image} = req.body;
-    console.log(id, make, model, price, year, miles, location, desc, image);
+    const { id, makeID, make, model, price, year, miles, location, desc, image } = req.body;
     const client = await pool.connect();
     let gotMake;
 
-    const makeCheck = await client.query('Select * from make where makeid = $1', [makeID])
+    const ownersID = req.session.userID;
+    
+    if (ownersID !== 1) {
+      // Check if the user is the owner of the car
+      const ownershipCheck = await client.query('SELECT seller_id FROM car WHERE car_id = $1', [id]);
+
+      if (ownershipCheck.rows.length === 0 || ownershipCheck.rows[0].seller_id !== ownersID) {
+        res.status(403).json({ message: "Unauthorized: You do not own this car or the car does not exist." });
+        return;
+      }
+    }
+
+    const makeCheck = await client.query('SELECT * FROM make WHERE makeid = $1', [makeID]);
 
     if (makeCheck.rows.length > 0) {
       gotMake = makeCheck.rows[0].makeid;
@@ -310,17 +321,19 @@ app.post('/update', async (req, res) => {
       'UPDATE car SET makeid = $1, car_model = $2, car_price = $3, car_year = $4, car_miles = $5, car_location = $6, car_desc = $7, car_image = $8 WHERE car_id = $9 RETURNING car_id',
       [gotMake, model, price, year, miles, location, desc, image, id]
     );
+
     if (updateResult.rows.length === 0) {
       res.status(404).send({ message: "No car found for the given car_id" });
       return;
     }
-    const queryResult = await client.query('SELECT * FROM car join make using(makeid) WHERE car_id = $1', [id]);
+
+    const queryResult = await client.query('SELECT * FROM car JOIN make USING(makeid) WHERE car_id = $1', [id]);
     const updatedCar = (queryResult) ? queryResult.rows[0] : null;
     res.json({ message: "Updated Car", car: updatedCar });
     client.release();
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error " + err);
+    res.status(500).json({ message: "Error updating car" });
   }
 });
 

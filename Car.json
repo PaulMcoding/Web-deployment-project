@@ -170,17 +170,17 @@
       "makename": "Hyundai"
     },
     {
-      "makeid": 15,
-      "car_id": 16,
-      "seller_id": 1,
-      "car_model": "Ninja H2R",
+      "makeid": 12,
+      "car_id": 14,
+      "seller_id": 2,
+      "car_model": "H2R",
       "car_price": "24500.00",
       "car_year": "2018",
       "car_miles": "1900",
       "car_location": "London",
       "car_desc": "God Damn",
-      "car_image": "https://storage.kawasaki.eu/public/kawasaki.eu/en-EU/model/17ZX1000Y_US_GY3_RF_C_002.png",
-      "makename": "Kawasaki"
+      "car_image": "https://mcn-images.bauersecure.com/wp-images/4331/1ninjah2r2.jpg",
+      "makename": "Ninja"
     }
   ]
 }
