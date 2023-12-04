@@ -20,23 +20,23 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Pauls Connection
-var pool = new Pool({
-user: 'paul',
-host: 'localhost',
-database: 'postgres',
-password: 'password',
-port: 54321
-});
+//// Pauls Connection
+//var pool = new Pool({
+//user: 'paul',
+//host: 'localhost',
+//database: 'postgres',
+//password: 'password',
+//port: 54321
+//});
 
-// //  Williams Connection
-//   var pool = new Pool({
-//     user: 'BUILDER', // PostgreSQL database username
-//     host: 'localhost', // PostgreSQL database host
-//     database: 'postgres', // PostgreSQL database name
-//     password: 'cls2', // PostgreSQL database password
-//     port: 54321 // PostgreSQL database port
-//   });
+ //  Williams Connection
+   var pool = new Pool({
+     user: 'BUILDER', // PostgreSQL database username
+     host: 'localhost', // PostgreSQL database host
+     database: 'postgres', // PostgreSQL database name
+     password: 'cls2', // PostgreSQL database password
+     port: 54321 // PostgreSQL database port
+   });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -136,10 +136,52 @@ app.get('/logout', (req, res) => {
 });
 
 //database manipulation routes
+
+app.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    if (!query) {
+      return res.status(400).json({ error: 'Query parameter is missing' });
+    }
+
+    const result = await pool.query(
+      'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1',
+      [`%${query}%`]
+    );
+
+    console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '%${query}%' OR make.makename ILIKE '%${query}%'`);
+    console.log('Result:', result.rows);
+
+    // Redirect to allcars.html with the search term as a query parameter
+    res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
+  } catch (error) {
+    console.error('Error executing search query:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 app.get('/getdata', async (req, res) => {
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM car join make using(makeid)');
+    const searchQuery = req.query.query;
+    let query;
+
+    if (searchQuery) {
+      // If there's a search query, filter based on car_model or makename
+      query = {
+        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1',
+        values: [`%${searchQuery}%`],
+      };
+    } else {
+      // If no search query, get all data
+      query = {
+        text: 'SELECT * FROM car JOIN make USING (makeid)',
+      };
+    }
+
+    const result = await client.query(query);
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
     client.release();

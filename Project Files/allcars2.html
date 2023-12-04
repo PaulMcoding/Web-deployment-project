@@ -4,14 +4,16 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Paul Murnane CV">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>Signin Template · Bootstrap v5.3</title>
+    <title>Carousel Template · Bootstrap v5.3</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
     <style>
       .bd-placeholder-img {
@@ -90,41 +92,15 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
     </style>
 
-
+    
     <!-- Custom styles for this template -->
-    <link href="CSS/sign-in.css" rel="stylesheet">
-  </head>
-  <header data-bs-theme="dark">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Paul & William's Car sales</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <a id="authButton" class="nav-link" href="/signin">Log In</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="album">Cars in stock</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="mycars">My Cars </a>
-            </li>
-          </ul>
-          <form class="d-flex" role="search" action="/search" method="GET">
-              <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-      </div>
-    </nav>
-  </header>
+    <link href="CSS/carousel.css" rel="stylesheet">
 
-  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+  </head>
+  <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -176,105 +152,112 @@
       </ul>
     </div>
 
+    
+    <header data-bs-theme="dark">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="/">Paul & William's Car sales</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                  <a id="authButton" class="nav-link" href="/signin">Log In</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="album">Cars in stock</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="mycars">My Cars </a>
+                </li>
+              </ul>
+              <form class="d-flex" role="search" action="/search" method="GET">
+                  <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+          </div>
+        </nav>
+      </header>
 
-<main class="form-signin w-100 m-auto">
-  <form id="signinForm">
-    <img class="mb-4" src="https://toyotaowners.b-cdn.net/uploads/monthly_2018_09/iq_forum_iq_copy.jpg.d9fc2a6d645e83b0bc75b2fb5ae68f34.jpg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+<main>
 
-    <div class="form-floating" >
-      <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
+  <!-- Your HTML content -->
+    <!-- Container for the cars -->
+    <div class="album py-5 bg-body-tertiary">
+      <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="carContainer"></div>
+      </div>
     </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
-
-    <p id="error-message" class="text-danger mt-2 mb-0" style="display: none; color: rgb(233, 95, 95) !important; text-align: center;"></p>
-
-    <div class="form-check text-start my-3">
-      <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-      <label class="form-check-label" for="flexCheckDefault">
-        Remember me
-      </label>
-    </div>
-    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-
-<button class="btn btn-primary w-100 py-2"
-        style="background-color: teal; border-color: teal; margin-top: 10px;"
-        onclick="window.location.href='/signup'" type="button">Sign up instead</button>
-
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2021–2023 PW and Associates</p>
-  </form>
-</main>
-<script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  let scriptExecuted = false;
 
-  document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('signinForm');
-  const errorMessage = document.getElementById('error-message');
+  function fetchData() {
+    const searchQuery = new URLSearchParams(window.location.search).get('query');
 
-  form.addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const jsonData = {};
-    formData.forEach((value, key) => {
-      jsonData[key] = value;
-    });
+    if (searchQuery) {
+      fetch(`/getdata?query=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (!scriptExecuted) {
+            const carContainer = document.getElementById('carContainer');
 
-    try {
-      const response = await fetch('/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonData),
-      });
-      
-      resetError();
-      if (response.ok) {
-        alert("You successfully signed in");
-        window.location.href = '/';
-      } else if (response.status === 401) {
-        const responseBody = await response.text();
-        if (responseBody === 'Invalid username') {
-          showError('Invalid username. Please try again.');
-        } else if (responseBody === 'Invalid password') {
-          showError('Invalid password. Please try again.');
-        } else  {
-          showError('Failed to sign in. Please try again later.');
-        }
-      } else {
-        showError('Failed to sign in. Please try again later.');
-        console.error('Failed to sign in:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error during sign in:', error);
+            // Clear existing content
+            carContainer.innerHTML = '';
+
+            for (let i = 0; i < data.results.length; i++) {
+              displayCar(i, data.results[i]);
+            }
+            scriptExecuted = true;
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     }
-  });
-
-  const urlParams = new URLSearchParams(window.location.search);
-      
-      if(urlParams.get('signedin') == 'no') {
-          showError('Please sign in to access checkout');
-        }
-      else if(urlParams.get('signedin') == 'view') {
-          showError('Please sign in to view cars');
-        }
-
-  function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
   }
 
-  function resetError() {
-    errorMessage.textContent = '';
-    errorMessage.style.display = 'none';
-  }
-});
+  document.addEventListener('DOMContentLoaded', fetchData);
 
+  function displayCar(car_id, carData) {
+    const carContainer = document.getElementById('carContainer');
+    const carBox = document.createElement('div');
+    carBox.classList.add('col');
+
+    const imageUrl = carData.car_image;
+    const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
+    const carDesc = carData.car_desc;
+    const carPrice = carData.car_price;
+    const carID = carData.car_id;
+
+    carBox.innerHTML = `
+      <div class="card shadow-sm">
+        <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="${imageUrl}" alt="${car_id}">
+        <div class="card-body">
+          <b><p class="card-text" id="carname${car_id}">${carName}</p></b>
+          <p class="card-text" id="desc${car_id}">${carDesc}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <a type="button" class="btn btn-sm btn-outline-secondary" href="/details?carID=${carData.car_id}" style="color: rgb(135, 218, 135); border-color: green;">View</a>
+              <a href="checkout" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
+            </div>
+            <small class="text-body-secondary" id="price${car_id}">Price: $${carPrice}</small>
+          </div>
+        </div>
+      </div>
+    `;
+
+    carContainer.appendChild(carBox);
+  }
 </script>
-    </body>
+
+
+
+</body>
+</html>
+
+
+</body>
 </html>
