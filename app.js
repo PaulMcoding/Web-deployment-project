@@ -21,6 +21,7 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+<<<<<<< Updated upstream
 //////////////////////// Pauls Connection
 var pool = new Pool({
 user: 'paul',
@@ -29,15 +30,25 @@ database: 'postgres',
 password: 'password',
 port: 54321
 });
+=======
+// Pauls Connection
+//var pool = new Pool({
+//user: 'paul',
+//host: 'localhost',
+//database: 'postgres',
+//password: 'password',
+//port: 54321
+//});
+>>>>>>> Stashed changes
 
-  // //  Williams Connection
-  //   var pool = new Pool({
-  //     user: 'BUILDER', // PostgreSQL database username
-  //     host: 'localhost', // PostgreSQL database host
-  //     database: 'postgres', // PostgreSQL database name
-  //     password: 'cls2', // PostgreSQL database password
-  //     port: 54321 // PostgreSQL database port
-  //   });
+ //  Williams Connection
+   var pool = new Pool({
+     user: 'BUILDER', // PostgreSQL database username
+     host: 'localhost', // PostgreSQL database host
+     database: 'postgres', // PostgreSQL database name
+     password: 'cls2', // PostgreSQL database password
+     port: 54321 // PostgreSQL database port
+   });
 
 //Web page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
@@ -91,6 +102,17 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.get('/getUserId', async (req, res) => {
+  try {
+    const userID = req.session.userID;
+
+    console.log('User ID:', userID);
+    res.json({ userID });
+  } catch (error) {
+    console.error('Error fetching user ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.post('/signin', async (req, res) => {
   var { email, password } = req.body;
@@ -100,11 +122,29 @@ app.post('/signin', async (req, res) => {
     if (result.rows.length === 1) {
       const hashedPassword = result.rows[0].user_pass;
       const uID = result.rows[0].user_id;
+<<<<<<< Updated upstream
+=======
+      if(uID == 1)
+      {
+        req.session.username = email;
+        req.session.userID = uID;
+        const userID = req.session.userID;
+
+    console.log('User ID:', userID);
+        return res.redirect('/');
+      }
+      else
+      {
+>>>>>>> Stashed changes
       const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
       if (passwordMatch) {
         req.session.username = email;
         req.session.userID = uID;
+        const userID = req.session.userID;
+
+    console.log('User ID:', userID);
+
         return res.redirect('/');
       } else {
         return res.status(401).send('Invalid password');

@@ -472,6 +472,7 @@ async function favourite() {
 
 }
 </script>
+<<<<<<< Updated upstream
 <script>
     document.getElementById('authButton2').style.display = 'block';
     document.getElementById('authButton').style.display = 'none';
@@ -484,12 +485,43 @@ async function favourite() {
     if (uID >= 0) {
       document.getElementById('authButton2').style.display = 'none';
       document.getElementById('authButton').style.display = 'block';
+=======
+
+  <script>
+function getUserID() {
+  console.log('Start fetching User ID...');
+  fetch('/getUserId', {
+    method: 'GET',
+    credentials: 'same-origin', // Include cookies in the request
+  })
+  .then(response => {
+    console.log('Response status:', response.status);
+    if (response.ok) {
+      return response.json();
+>>>>>>> Stashed changes
     } else {
-      console.log('uID not present in the URL');
+      throw new Error('Failed to fetch user ID');
+    }
+  })
+  .then(data => {
+    console.log('User ID data:', data);
+        if (data.userID != null) {
+          document.getElementById('authButton').style.display = 'none';
+          document.getElementById('authButton2').style.display = 'block';
+        } else {
+          document.getElementById('authButton').style.display = 'block';
+          document.getElementById('authButton2').style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching user ID:', error);
+      });
     }
 
-    console.log('After: uID =', uID);
-</script>
+    window.onload = function() {
+      getUserID();
+    };
+  </script>
 
     </body> 
 </html>
