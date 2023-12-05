@@ -473,8 +473,8 @@ async function favourite() {
 }
 </script>
 <script>
-    document.getElementById('authButton2').style.display = 'none';
-    document.getElementById('authButton').style.display = 'block';
+    document.getElementById('authButton2').style.display = 'block';
+    document.getElementById('authButton').style.display = 'none';
 
     const urlParams = new URLSearchParams(window.location.search);
     const uID = urlParams.get('uID');
@@ -482,8 +482,8 @@ async function favourite() {
     console.log('Before: uID =', uID);
 
     if (uID >= 0) {
-      document.getElementById('authButton2').style.display = 'block';
-      document.getElementById('authButton').style.display = 'none';
+      document.getElementById('authButton2').style.display = 'none';
+      document.getElementById('authButton').style.display = 'block';
     } else {
       console.log('uID not present in the URL');
     }

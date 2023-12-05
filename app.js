@@ -1,8 +1,9 @@
 var express = require('express');
 var session = require('express-session')
 var app = express();
-var http = require('http');
 var { Pool } = require('pg');
+
+var http = require('http');
 var url = require('url');
 var path = require('path');
 var fs = require('fs');
@@ -20,7 +21,7 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Pauls Connection
+//////////////////////// Pauls Connection
 var pool = new Pool({
 user: 'paul',
 host: 'localhost',
@@ -97,14 +98,6 @@ app.post('/signin', async (req, res) => {
     if (result.rows.length === 1) {
       const hashedPassword = result.rows[0].user_pass;
       const uID = result.rows[0].user_id;
-      if(uID == 1)
-      {
-        req.session.username = email;
-        req.session.userID = uID;
-        return res.redirect('/');
-      }
-      else
-      {
       const passwordMatch = await bcrypt.compare(password, hashedPassword);
 
       if (passwordMatch) {
@@ -115,7 +108,7 @@ app.post('/signin', async (req, res) => {
         return res.status(401).send('Invalid password');
       }
     }
-    } else {
+    else {
       return res.status(401).send('Invalid username');
     }
   } catch (error) {
@@ -142,11 +135,9 @@ app.get('/search', async (req, res) => {
     const { query } = req.query;
 
     if (!query) {
-      // If the query is empty, simulate a search for all cars
       result = await pool.query('SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid');
       console.log('All Cars Result:', result.rows);
     } else {
-      // If there is a query, perform a search based on the query
       result = await pool.query(
         'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_year = $2',
         [`%${query}%`, query]
