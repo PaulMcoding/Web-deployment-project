@@ -361,6 +361,31 @@ app.post('/messageSeller', async (req, res) => {
     }
   })
 
-app.listen(8080, () => {
-  console.log('Server is running on port 8080');
-});
+  app.post('/favourite', async (req, res) => {
+    try {
+      res.header('Content-Type', 'application/json');
+      const { carID } = req.body;
+      if(req.session.userID)
+      {
+      const userID = req.session.userID;
+  
+      const messageResult = await pool.query('INSERT INTO favourite(user_id, car_model) VALUES ($1, $2)', [userID, carID]);
+  
+      if (messageResult) {
+        res.status(200).send("yes");
+      } else {
+        res.status(500).send("Failed to add favourite");
+      }
+    }
+    else{
+      res.status(500).send("nope");
+    }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error " + err);
+    }
+  });
+  
+  app.listen(8080, () => {
+    console.log('Server is running on port 8080');
+  });

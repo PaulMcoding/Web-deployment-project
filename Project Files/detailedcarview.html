@@ -208,7 +208,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <button type="button" id="message" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Message Seller</button>
-                      <a type="button" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
+                      <a type="button" id="favourite" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
                     </div>
                     <small class="text-body-secondary" id="price1"></small>
                     <small class="text-body-secondary" id="seller1" style="display: none;"></small>
@@ -221,6 +221,9 @@
       </div>
       <div style="display: flex; justify-content: center; align-items: center;">
         <b><a href="/signin" id="loginMessage" class="text-danger" style="text-align: center; text-decoration: none; border-bottom: 1px solid grey; width: 250px; display: none;">Please log in to send messages.</a></b>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <b><a href="/signin" id="favouritemessage" class="text-danger" style="text-align: center; text-decoration: none; border-bottom: 1px solid grey; width: 250px; display: none;">Please log in to add a favourite.</a></b>
       </div>
     </div>
 
@@ -313,6 +316,7 @@
     } else if (response.status === 401) {
       const responseBody = await response.text();
       if (responseBody === 'Login') {
+        document.getElementById('favouritemessage').style.display = 'none';
         document.getElementById('loginMessage').style.display = 'block';
       } else {
         console.log("Big problem here")
@@ -336,6 +340,58 @@ document.getElementById('message').addEventListener('click', async function () {
 });
 </script>
 
+<script>
+  async function favourite() {
+    try {
+    const carID = +urlParams.get('carID'); 
+
+    const postData = {
+      carID: carID,
+    };
+
+    const response = await fetch('/favourite', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
+    if (response.ok) {
+      alert('Car added to favourites');
+      window.location.href = '/';
+    } 
+    else if (!response.ok) {
+      const responseBody = await response.text();
+      if (responseBody === 'yes') {
+        document.getElementById('loginMessage').style.display = 'none';
+        document.getElementById('favouritemessage').style.display = 'block';
+      }
+      else if (response.status === 500)
+      {
+        document.getElementById('loginMessage').style.display = 'none';
+        document.getElementById('favouritemessage').style.display = 'block';
+      }
+      else {
+        alert("Big problem here")
+      }
+    } else {
+      console.error('Big problem', response.statusText);
+    }
+  } 
+  catch (error) {
+    console.error('Big problem', error);
+  }
+  }
+
+  document.getElementById('favourite').addEventListener('click', async function () {
+  try {
+    const result = await favourite();
+    console.log('Result:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+</script>
 
     </body>
 </html>
