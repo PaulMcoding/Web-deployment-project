@@ -30,7 +30,7 @@ CREATE TABLE car (
 
 create table favourite(
 	user_id int references webusers(user_id),
-	car_model int references car(car_id)
+	car_id int references car(car_id)
 );
 
 create table webseller(
@@ -39,9 +39,6 @@ create table webseller(
 	car_id int references car(car_id),
 	seller_message varchar(250)
 );
-
-
-insert into webusers(user_email, user_pass) values ('admin@gmail.com', 'admin');
 
 insert into make(makename) values('Honda');
 insert into make(makename) values('Nissan');
@@ -53,10 +50,11 @@ insert into make(makename) values('Porsche');
 insert into make(makename) values('Aston Martin');
 insert into make(makename) values('Hyundai');
 
-select * from car;
+select * from car left join MAKE using(makeid);
 select * from make;
 select * from webusers;
 select * from webseller;
+select * from favourite;
 
 
 SELECT * FROM car left join make using(makeid);

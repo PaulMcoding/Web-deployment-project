@@ -61,7 +61,9 @@ app.get('/details', (req, res) => {
       res.redirect('/signin?signedin=view'); 
     }
     });
-
+app.get('/favs', (req, res) => {
+    res.sendFile(__dirname + '/Project Files/viewfavourites.html');
+  });
 app.get('/album', (req, res) => {
   res.redirect('/allcars.html'); 
 });
@@ -172,6 +174,26 @@ app.get('/getdata', async (req, res) => {
         text: 'SELECT * FROM car JOIN make USING (makeid)',
       };
     }
+
+    const result = await client.query(query);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+app.get('/getfavdata', async (req, res) => {
+  try {
+    const uid = req.session.userID;
+    const client = await pool.connect();
+
+      const query = {
+        text: 'SELECT * FROM car JOIN make USING (makeid) join favourite using(car_id) where user_id = $1',
+        values: [uid],
+      };
 
     const result = await client.query(query);
     const results = { 'results': (result) ? result.rows : null };
@@ -360,7 +382,7 @@ app.post('/messageSeller', async (req, res) => {
       {
       const userID = req.session.userID;
   
-      const messageResult = await pool.query('INSERT INTO favourite(user_id, car_model) VALUES ($1, $2)', [userID, carID]);
+      const messageResult = await pool.query('INSERT INTO favourite(user_id, car_id) VALUES ($1, $2)', [userID, carID]);
   
       if (messageResult) {
         res.status(200).send("yes");
@@ -380,3 +402,23 @@ app.post('/messageSeller', async (req, res) => {
   app.listen(8080, () => {
     console.log('Server is running on port 8080');
   });
+
+
+/*
+app.get('/loggedin')
+if(req.session.userID)
+{
+  res.status(305);
+}
+else
+{
+  res.status(200);
+}
+*/
+
+/*
+if(response.status==305)
+  show log out
+else
+  show log in
+ */

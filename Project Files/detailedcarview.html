@@ -169,6 +169,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="mycars">My Cars </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="favs">Favourites</a>
+              </li>
             </ul>
             <form class="d-flex" role="search" action="/search" method="GET">
               <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
@@ -285,9 +288,6 @@
 
   displayCar(carID, 'carContainer1', 'carname1', 'desc1', 'price1', 'location1', 'miles1', 'seller1');
 
-</script>
-  
-<script>
   async function sendMessage() {
   try {
     const carID = +urlParams.get('carID'); // Convert to number
@@ -310,6 +310,7 @@
       },
       body: JSON.stringify(postData),
     });
+
     if (response.ok) {
       alert('Message sent successfully');
       window.location.href = '/';
@@ -338,9 +339,7 @@ document.getElementById('message').addEventListener('click', async function () {
     console.error('Error:', error);
   }
 });
-</script>
 
-<script>
   async function favourite() {
     try {
     const carID = +urlParams.get('carID'); 
