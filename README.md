@@ -28,14 +28,14 @@ ALL FILES:
 interact with a database with
 	[10] authentication mechanism <-- sessions with puplic and private pages ✅
 	[10] CRUD ✅
-	[10] asynchronous communicaton ❓
+	[10] asynchronous communicaton ✅
 	[10] data consumption from a REST API ✅
 [10] responsive mobile first design ✅
 [10] code security ❓
-[10] design patters, code quality ✅+❓
+[10] design patterns, code quality ✅+❓
 [10] considering UX ✅
 node.js ✅
-add dianaferreiraTUDublin and cindytudublin as a collaborator ✅+❓
+add dianaferreiraTUDublin and cindytudublin as a collaborator ✅
 Any external code snippets must be properly acknowledged (for example with comments in the code) ✅+❓
-[5] Advanced search and filter mechanism ❓
-Currently [60/85]
+[5] Advanced search and filter mechanism ✅
+Currently [75/85]
