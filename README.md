@@ -26,7 +26,7 @@ ALL FILES:
 
 
 interact with a database with
-	[10] authentication mechanism <-- sessions with puplic and private pages ✅
+	[10] authentication mechanism <-- sessions with public and private pages ✅
 	[10] CRUD ✅
 	[10] asynchronous communicaton ✅
 	[10] data consumption from a REST API ✅

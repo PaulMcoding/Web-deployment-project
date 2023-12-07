@@ -169,6 +169,9 @@
             <a id="authButton" class="nav-link" href="/signin">Log In</a>
           </li>
           <li class="nav-item">
+            <a id="authButton2" class="nav-link" href="/logout">Log out</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="album">Cars in stock</a>
           </li>
           <li class="nav-item">
@@ -238,13 +241,6 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-
-
-  <!-- Marketing messaging and featurettes
-  ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
-
-  <!-- <div class="container marketing" -->
 
 <!--Album start --><!--Album start --><!--Album start -->
 <!--Album start --><!--Album start --><!--Album start -->
@@ -472,37 +468,24 @@ async function favourite() {
 
 }
 </script>
-<<<<<<< Updated upstream
-<script>
-    document.getElementById('authButton2').style.display = 'block';
-    document.getElementById('authButton').style.display = 'none';
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const uID = urlParams.get('uID');
-
-    console.log('Before: uID =', uID);
-
-    if (uID >= 0) {
-      document.getElementById('authButton2').style.display = 'none';
-      document.getElementById('authButton').style.display = 'block';
-=======
 
   <script>
 function getUserID() {
   console.log('Start fetching User ID...');
   fetch('/getUserId', {
     method: 'GET',
-    credentials: 'same-origin', // Include cookies in the request
+    credentials: 'same-origin',
   })
+
   .then(response => {
     console.log('Response status:', response.status);
     if (response.ok) {
       return response.json();
->>>>>>> Stashed changes
     } else {
       throw new Error('Failed to fetch user ID');
     }
   })
+  
   .then(data => {
     console.log('User ID data:', data);
         if (data.userID != null) {
