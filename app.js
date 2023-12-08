@@ -51,6 +51,9 @@ app.get('/signin', (req, res) => {
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signup.html');
 });
+app.get('/readmessage', (req, res) => {
+  res.sendFile(__dirname + '/Project Files/readmessage.html');
+});
 app.get('/details', (req, res) => {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
   });
@@ -255,6 +258,27 @@ app.post('/getdetails', async (req, res) => {
     const carid = req.body.carID;
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM car join make using(makeid) where car_id = $1', [carid]);
+    const results = { 'results': (result) ? result.rows : null };
+    res.send(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+
+//database manipulation routes
+app.post('/getmessage', async (req, res) => {
+  try {
+    const carid = req.body.carID;
+    const client = await pool.connect();
+    const result = await client.query(`
+    SELECT * FROM webseller
+    JOIN webusers ON webseller.seller_id = webusers.user_id
+    WHERE webseller.car_id = $1
+  `, [carid]);
+
     const results = { 'results': (result) ? result.rows : null };
     res.send(results);
     client.release();

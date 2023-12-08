@@ -233,71 +233,16 @@
       </div>
     </div>
 
-    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="messageModalLabel">Message to Seller</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <textarea class="form-control" id="messageContent" rows="4" placeholder="Type your message..."></textarea>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="sendMessageBtn">Send Message</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    
   <!-- FOOTER -->
   <footer class="container" style="margin-top:300px;">
     <p>&copy; 2021–2023 PW and Associates &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
   </footer>
 </main>
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="getuserid.js"></script>
 
 <script>
-    let userlogged
-
-function getUserID() {
-    console.log('Start fetching User ID...');
-    fetch('/getUserId', {
-      method: 'GET',
-      credentials: 'same-origin',
-    })
-  
-    .then(response => {
-      console.log('Response status:', response.status);
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Failed to fetch user ID');
-      }
-    })
-    
-    .then(data => {
-      console.log('User ID data:', data);
-          if (data.userID != null) {
-            document.getElementById('authButton').style.display = 'none';
-            document.getElementById('authButton2').style.display = 'block';
-            userlogged = 1
-          } else {
-            document.getElementById('authButton').style.display = 'block';
-            document.getElementById('authButton2').style.display = 'none';
-            userlogged = 2
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching user ID:', error);
-        });
-      }
-  
-      window.onload = function() {
-        getUserID();
-      };
-
   const urlParams = new URLSearchParams(window.location.search);
 
   async function displayCar(car_id, containerId, carname, descId, price, location, miles, seller) {
@@ -347,18 +292,18 @@ function getUserID() {
 
   displayCar(carID, 'carContainer1', 'carname1', 'desc1', 'price1', 'location1', 'miles1', 'seller1');
 
-  async function sendMessage(messageContent) {
+  async function sendMessage() {
   try {
-    const carID = +urlParams.get('carID');
+    const carID = +urlParams.get('carID'); // Convert to number
     var carName = document.getElementById('carname1').innerText;
-    const messageIn = carName + ": " + messageContent;
+    const messageContent = `I am interested in the car: ${carName}`;
     const sellerID = document.getElementById('seller1').innerText;
     const detail = document.getElementById('carname1').innerText;
 
     const postData = {
       carID: carID,
       sellerID: sellerID,
-      message: messageIn,
+      message: messageContent,
       carName: detail,
     };
 
@@ -371,7 +316,7 @@ function getUserID() {
     });
 
     if (response.ok) {
-      alert('Message sent successfully');
+      alert('Message of interest sent successfully');
       window.location.href = '/';
     } else if (response.status === 401) {
       const responseBody = await response.text();
@@ -389,6 +334,15 @@ function getUserID() {
     console.error('Error during sign in:', error);
   }
 }
+
+document.getElementById('message').addEventListener('click', async function () {
+  try {
+    const result = await sendMessage();
+    console.log('Result:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
 
   async function favourite() {
     try {
@@ -440,30 +394,6 @@ function getUserID() {
     console.error('Error:', error);
   }
 });
-
-document.getElementById('message').addEventListener('click', function () {
-    if(userlogged == 1){
-        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
-        messageModal.show();
-    }
-    else
-    {
-        document.getElementById('loginMessage').style.display = 'block';
-        document.getElementById('favouritemessage').style.display = 'none';
-    }
-  });
-
-  document.getElementById('sendMessageBtn').addEventListener('click', async function () {
-  try {
-    const messageContent = document.getElementById('messageContent').value;  // Get message content from the textarea
-    await sendMessage(messageContent);  // Pass the message content to sendMessage
-    const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
-    messageModal.hide();
-  } catch (error) {
-    console.error('Error:', error);
-  }
-});
-
 </script>
 
     </body>

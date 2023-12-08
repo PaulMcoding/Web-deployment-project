@@ -1,3 +1,4 @@
+
 function getUserID() {
     console.log('Start fetching User ID...');
     fetch('/getUserId', {
@@ -19,9 +20,11 @@ function getUserID() {
           if (data.userID != null) {
             document.getElementById('authButton').style.display = 'none';
             document.getElementById('authButton2').style.display = 'block';
+            userlogged = 1
           } else {
             document.getElementById('authButton').style.display = 'block';
             document.getElementById('authButton2').style.display = 'none';
+            userlogged = 2
           }
         })
         .catch(error => {

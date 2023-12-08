@@ -7,50 +7,15 @@
     <meta name="description" content="Paul Murnane CV">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>P&W Car Sales - My Cars</title>
+    <title>P&W Car Sales </title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
     <style>
-
-        table {
-    margin: 20px 0;
-    padding: 20px;
-}
-
-        main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around; /* Adjust as needed */
-        }
-
-        .forms-container {
-            display: flex;
-            justify-content: space-around; /* Adjust as needed */
-            width: 100%;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        form label {
-            margin-bottom: 5px;
-        }
-
-        form input {
-            width: 100%; /* Make the input fields fill the width */
-            padding: 5px;
-            box-sizing: border-box; /* Include padding and border in width calculation */
-            margin-bottom: 10px;
-        }
-
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -127,9 +92,10 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
     </style>
 
-
+    
     <!-- Custom styles for this template -->
     <link href="CSS/carousel.css" rel="stylesheet">
 
@@ -186,7 +152,7 @@
       </ul>
     </div>
 
-
+    
     <header data-bs-theme="dark">
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
@@ -221,203 +187,134 @@
       </nav>
     </header>
 
-</head>
-    <body>
 <main>
-  <br><br>
-  <h1>Car Management</h1>
 
-  <!-- Display Car Table -->
-  <table width="90%">
-    <thead>
-      <tr>
-        <th>Car ID</th>
-        <th>Make ID</th>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Price</th>
-        <th>Year</th>
-        <th>Miles</th>
-        <th>Location</th>
-        <th width="200px">Car Description</th>
-        <th>Image</th>
-        <th>Delete car</th>
-        <th>Read Messages</th>
-      </tr>
-    </thead>
-    <tbody id="carTableBody">
-    </tbody>
-  </table>
-
-  <hr>
-
-  <!-- Form for Adding a New Car -->
-    <div class="forms-container">
-  <h2>Add New Car</h2>
-  <form id="addCarForm">
-    <label for="make">Make:</label>
-    <input type="text" id="make" name="make" required>
-    <label for="model">Model:</label>
-    <input type="text" id="model" name="model" required>
-    <label for="price">Price:</label>
-    <input type="number" id="price" name="price" step="0.01" required>
-    <label for="year">Year:</label>
-    <input type="text" id="year" name="year" maxlength="4" required>
-    <label for="miles">Miles:</label>
-    <input type="text" id="miles" name="miles" maxlength="8" required>
-    <label for="location">Location:</label>
-    <input type="text" id="location" name="location" required>
-    <label for="desc">Car Description:</label>
-    <input type="text" id="desc1" name="desc" required>
-    <label for="image">Image URL:</label>
-    <input type="text" id="image" name="image" required>
-    <button type="button" onclick="addCar()">Add Car</button>
-  </form>
-
-  <hr>
-
-  <!-- Form for Updating a Car -->
-    <h2>Update Car</h2>
-    <form id="updateCarForm">
-    <label for="updateId">Car ID to Update:</label>
-    <input type="number" id="updateId" name="updateId" required>
-    <label for="make">Make ID:</label>
-    <input type="number" id="make2" name="makeid" required>
-    <label for="make">Make:</label>
-    <input type="text" id="makename" name="makename" required>
-    <label for="model">Model:</label>
-    <input type="text" id="model2" name="model" required>
-    <label for="price">Price:</label>
-    <input type="number" id="price2" name="price" step="0.01" required>
-    <label for="year">Year:</label>
-    <input type="text" id="year2" name="year" maxlength="4" required>
-    <label for="miles">Miles:</label>
-    <input type="text" id="miles2" name="miles" maxlength="8" required>
-    <label for="location">Location:</label>
-    <input type="text" id="location2" name="location" required>
-    <label for="desc">Car Description:</label>
-    <input type="text" id="desc2" name="desc" required>
-    <label for="image">Image URL:</label>
-    <input type="text" id="image2" name="image" required>
-    <button type="button" onclick="updateCar()">Update Car</button>
-  </form>
-
-  <hr>
+  <!-- Your HTML content -->
+    <!-- Container for the cars -->
+    <div class="album py-5 bg-body-tertiary">
+      <div class="container">
+        <div class="row row-cols-1 g-3" id="carContainer"></div>
+      </div>
     </div>
-</main>
-    </body>
-    <!-- FOOTER -->
-  <footer class="container" style="margin-top: 70px;">
-    <p class="float-end"><a href="#">Back to top</a></p>
-    <p>&copy; 2021–2023 PW and Associates &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-  </footer>
-</main>
-<script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="getuserid.js"></script>
 
-  <script>
+<script>
+    let scriptExecuted = false;
 
-  // Function to display table
-    async function displayCars() {
-      const response = await fetch('/getusersdata');
-      const data = await response.json();
-      const carTableBody = document.getElementById('carTableBody');
-      carTableBody.innerHTML = ''; // Clear existing data
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlCarID = urlParams.get('carid');
 
-      if (data.results) {
-        data.results.forEach(car => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${car.car_id}</td>
-            <td>${car.makeid}</td>
-            <td>${car.makename}</td>
-            <td>${car.car_model}</td>
-            <td>${car.car_price}</td>
-            <td>${car.car_year}</td>
-            <td>${car.car_miles}</td>
-            <td>${car.car_location}</td>
-            <td>${car.car_desc}</td>
-            <td><img src="${car.car_image}" alt="Car Image" style="width: 100px; height: auto;"></td>
-            <td><button onclick="deleteCar(${car.car_id})">Delete</button></td>
-            <td><button onclick="readmessage(${car.car_id})">Read Messages</button></td>
-          `;
-          carTableBody.appendChild(row);
+    function fetchData() {
+      fetch(`/getdetails`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ carID: urlCarID }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (!scriptExecuted) {
+            for (let i = 0; i < data.results.length; i++) {
+              displayCar(i, data.results[i]);
+            }
+            scriptExecuted = true;
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
         });
+        fetchMessages();
+    }
+
+    async function fetchMessages() {
+      try {
+        const response = await fetch('/getmessage', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ carID: urlCarID }),
+        });
+
+        const data = await response.json();
+        const carContainer = document.getElementById('carContainer');
+
+        if (data.results && data.results.length > 0) {
+          updateMessageContainer(carContainer, data.results);
+        } else {
+          const messageContainer = document.createElement('div');
+          messageContainer.classList.add('card', 'shadow-sm');
+          messageContainer.innerHTML = '<div class="card-body" style="text-align:center">No messages available.</div>';
+          carContainer.appendChild(messageContainer);
+        }
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('card', 'shadow-sm');
+        messageContainer.innerHTML = `<div class="card-body" style="text-align:center; color: red;">Error fetching messages: ${error}</div>`;
+        carContainer.appendChild(messageContainer);
       }
     }
 
-    // Function to add a new car
-    async function addCar() {
-      const make = document.getElementById('make').value;
-      const model = document.getElementById('model').value;
-      const price = document.getElementById('price').value;
-      const year = document.getElementById('year').value;
-      const miles = document.getElementById('miles').value;
-      const location = document.getElementById('location').value;
-      const desc = document.getElementById('desc1').value;
-      const image = document.getElementById('image').value;
+    function updateMessageContainer(container, messages) {
+      const messageContainer = document.createElement('div');
+      messageContainer.classList.add('card', 'shadow-sm');
+      messageContainer.innerHTML = '<div class="card-body" style="text-align:center"><h5>Messages:</h5>';
+      const list = document.createElement('ul');
 
-      const response = await fetch('/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ make, model, price, year, miles, location, desc, image }),
+      messages.forEach((message) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${message.seller_message} - ${message.user_email}`;
+        list.appendChild(listItem);
       });
 
-      const result = await response.json();
-      console.log(result.message);
-      displayCars();
+      messageContainer.appendChild(list);
+      messageContainer.innerHTML += '</div>';
+      container.appendChild(messageContainer);
     }
 
-    // Function to update a car
-    async function updateCar() {
-    const updateId = document.getElementById('updateId').value;
-    const modelID = document.getElementById('make2').value; // Corrected variable name
-    const make = document.getElementById('makename').value;
-    const model = document.getElementById('model2').value;
-    const price = document.getElementById('price2').value;
-    const year = document.getElementById('year2').value;
-    const miles = document.getElementById('miles2').value;
-    const location = document.getElementById('location2').value;
-    const desc = document.getElementById('desc2').value;
-    const image = document.getElementById('image2').value;
+    document.addEventListener('DOMContentLoaded', fetchData);
 
-    const response = await fetch('/update', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: updateId, modelID, make, model, price, year, miles, location, desc, image }), // Corrected variable name
-    });
+    function displayCar(car_id, carData) {
+      const carContainer = document.getElementById('carContainer');
+      const carBox = document.createElement('div');
+      carBox.classList.add('col');
 
-    const result = await response.json();
-    alert(result.message);
-    displayCars();
-  }
+      const imageUrl = carData.car_image;
+      const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
+      const carDesc = carData.car_desc;
+      const carPrice = carData.car_price;
+      const carID = carData.car_id;
 
-    // Function to delete a car
-    async function deleteCar(id) {
-      const deleteId = id || document.getElementById('deleteId').value;
-      const response = await fetch('/delete', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: deleteId }),
-      });
-      const result = await response.json();
-      console.log(result.message);
-      displayCars();
+      carBox.innerHTML = `
+        <div class="card shadow-sm">
+          <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="${imageUrl}" alt="${car_id}">
+          <div class="card-body">
+            <b><p class="card-text" id="carname${car_id}">${carName}</p></b>
+            <p class="card-text" id="desc${car_id}">${carDesc}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="/details?carID=${carData.car_id}" style="color: rgb(135, 218, 135); border-color: green;">View</a>
+                <a href="checkout" class="btn btn-sm btn-outline-secondary" style="color: rgb(135, 218, 135); border-color: green;">Favourite</a>
+              </div>
+              <small class="text-body-secondary" id="price${car_id}">Price: $${carPrice}</small>
+            </div>
+          </div>
+        </div>
+      `;
+      carContainer.appendChild(carBox);
     }
 
-    async function readmessage(id) {
-      const url = `readmessage?carid=${id}`;
+</script>
 
-    window.location.href = url;
-    }
-    // Initial display of cars
-    displayCars();
-  </script>
-  </body>
+
+
+
+</body>
+</html>
+
+
+</body>
 </html>
