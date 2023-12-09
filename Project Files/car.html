@@ -304,7 +304,8 @@
                 <input id="desc2" name="desc" required type="text">
                 <label for="image">Image URL:</label>
                 <input id="image2" name="image" required type="text">
-                <button onclick="updateCars(${car.car_id})" type="button">Update Car</button>
+                <td><button onclick="updateCars(${car.car_id})">Update car</button></td>
+
             </form>
 
         <hr>
@@ -346,7 +347,7 @@ async function displayCars()
             <td>${car.car_location}</td>
             <td>${car.car_desc}</td>
             <td><img src="${car.car_image}" alt="Car Image" style="width: 100px; height: auto;"></td>
-            <td><button onclick="updateCars()">Update car</button></td>
+            <td><button onclick="updateCars(${car.car_id})">Update car</button></td>
             <td><button onclick="deleteCar(${car.car_id})">Delete</button></td>
             <td><button onclick="readmessage(${car.car_id})">Read Messages</button></td>
             `;
@@ -382,9 +383,8 @@ async function addCar()
     displayCars();
 }
 
-// Function to update a car
-function updateCars() {
-    window.location.href = '//updateCars?carId=${carId}';
+function updateCars(carId) {
+    window.location.href = `/updateCars?carId=${carId}`;
 }
 
 

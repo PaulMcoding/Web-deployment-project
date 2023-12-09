@@ -45,11 +45,6 @@ app.use(express.static(path.join(__dirname, 'Project Files')));
 app.get('/', (req, res) => {
   res.render('index');
 });
-app.get('/updateCars', (req, res) => {
-    const carId = req.query.carId;
-    res.render('updateCars', { carId });
-});
-});
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signin.html');
 });
@@ -80,6 +75,29 @@ app.get('/readmessage', (req, res) => {
     res.redirect('/signin?signedin=view'); 
   }
   });
+
+app.get('/updateCars', async (req, res) => {
+    const carId = req.query.carId;
+
+    // Fetch data based on carId from the database
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_id = $1', [carId]);
+
+        if (result.rows.length === 0) {
+            // Car not found
+            es.sendFile(path.join(__dirname, '/Project Files/cars.html'));
+        } else {
+            // Car found, send the updateCars.html file
+            res.sendFile(path.join(__dirname, '/Project Files/updateCars.html'));
+        }
+
+        client.release();
+    } catch (error) {
+        console.error('Error fetching car data:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 app.post('/signup', async (req, res) => {
   try {
@@ -267,7 +285,7 @@ app.post('/getdetails', async (req, res) => {
   try {
     const carid = req.body.carID;
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM car join make using(makeid) where car_id = $1', [carid]);
+    const result = await client.query('SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_id = $1', [carid]);
     const results = { 'results': (result) ? result.rows : null };
     res.send(results);
     client.release();

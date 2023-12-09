@@ -289,33 +289,54 @@
 </main>
 <script src="boot/assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="getuserid.js"></script>
-<script>
-// Function to update a car
-async function updateCar()
-{
-    const updateId = document.getElementById('updateId').value;
-    const modelID = document.getElementById('make2').value;
-    const make = document.getElementById('makename').value;
-    const model = document.getElementById('model2').value;
-    const price = document.getElementById('price2').value;
-    const year = document.getElementById('year2').value;
-    const miles = document.getElementById('miles2').value;
-    const location = document.getElementById('location2').value;
-    const desc = document.getElementById('desc2').value;
-    const image = document.getElementById('image2').value;
+<!-- Add this script to your updateCars.html file -->
 
-    const response = await fetch('/update', {
-    method: 'POST',
-    headers: {
-    'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ id: updateId, makeID, make, model, price, year, miles, location, desc, image }),
+<script>
+// Extract carId from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const carId = urlParams.get('carId');
+
+// Function to fetch car details by carId
+async function getCarDetails(carId) {
+  try {
+    const response = await fetch(`/getdetails`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ carID: carId }),
     });
 
-    const result = await response.json();
-    console.log(result.message);
-    displayCars();
+    const data = await response.json();
+
+    // Check if data is available
+    if (data && data.results && data.results.length > 0) {
+      const carDetails = data.results[0];
+
+      // Populate form fields with default values
+      document.getElementById('updateId').value = carDetails.car_id;
+      document.getElementById('make2').value = carDetails.makeid;
+      document.getElementById('makename').value = carDetails.makename;
+      document.getElementById('model2').value = carDetails.model;
+      document.getElementById('price2').value = carDetails.price;
+      document.getElementById('year2').value = carDetails.year;
+      document.getElementById('miles2').value = carDetails.miles;
+      document.getElementById('location2').value = carDetails.location;
+      document.getElementById('desc2').value = carDetails.description;
+      document.getElementById('image2').value = carDetails.image;
+    } else {
+      console.error('No data available for the specified carId');
+    }
+  } catch (error) {
+    console.error('Error fetching car details:', error);
+  }
 }
+
+// Call the function with the extracted carId
+getCarDetails(carId);
+
 </script>
+
+
 </body>
 </html>
