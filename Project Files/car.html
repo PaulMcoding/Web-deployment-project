@@ -30,30 +30,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around; /* Adjust as needed */
-        }
-
-        .forms-container {
-            display: flex;
-            justify-content: space-around; /* Adjust as needed */
-            width: 100%;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        form label {
-            margin-bottom: 5px;
-        }
-
-        form input {
-            width: 100%; /* Make the input fields fill the width */
-            padding: 5px;
-            box-sizing: border-box; /* Include padding and border in width calculation */
-            margin-bottom: 10px;
         }
 
       .bd-placeholder-img {
@@ -246,6 +222,7 @@
         <th>Location</th>
         <th width="200px">Car Description</th>
         <th>Image</th>
+          <th>Update car</th>
         <th>Delete car</th>
         <th>Read Messages</th>
       </tr>
@@ -343,6 +320,7 @@
             <td>${car.car_location}</td>
             <td>${car.car_desc}</td>
             <td><img src="${car.car_image}" alt="Car Image" style="width: 100px; height: auto;"></td>
+            <td><button onclick="updateCar(${car.car_id})">Update car</td>
             <td><button onclick="deleteCar(${car.car_id})">Delete</button></td>
             <td><button onclick="readmessage(${car.car_id})">Read Messages</button></td>
           `;
