@@ -45,6 +45,11 @@ app.use(express.static(path.join(__dirname, 'Project Files')));
 app.get('/', (req, res) => {
   res.render('index');
 });
+app.get('/updateCars', (req, res) => {
+    const carId = req.query.carId;
+    res.render('updateCars', { carId });
+});
+});
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signin.html');
 });
