@@ -51,12 +51,15 @@ app.get('/signin', (req, res) => {
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signup.html');
 });
-app.get('/readmessage', (req, res) => {
-  res.sendFile(__dirname + '/Project Files/readmessage.html');
-});
 app.get('/details', (req, res) => {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
   });
+  app.get('/favs', (req, res) => {
+    res.sendFile(__dirname + '/Project Files/viewfavourites.html');
+  });
+app.get('/album', (req, res) => {
+  res.redirect('/allcars.html'); 
+});
  app.get('/mycars', (req, res) => {
     if (req.session.username) {
       res.sendFile(__dirname + '/Project Files/car.html');
@@ -64,12 +67,14 @@ app.get('/details', (req, res) => {
       res.redirect('/signin?signedin=view'); 
     }
     });
-app.get('/favs', (req, res) => {
-    res.sendFile(__dirname + '/Project Files/viewfavourites.html');
+
+app.get('/readmessage', (req, res) => {
+  if (req.session.username) {
+    res.sendFile(__dirname + '/Project Files/readmessage.html');
+  } else {
+    res.redirect('/signin?signedin=view'); 
+  }
   });
-app.get('/album', (req, res) => {
-  res.redirect('/allcars.html'); 
-});
 
 app.post('/signup', async (req, res) => {
   try {
@@ -275,7 +280,7 @@ app.post('/getmessage', async (req, res) => {
     const client = await pool.connect();
     const result = await client.query(`
     SELECT * FROM webseller
-    JOIN webusers ON webseller.seller_id = webusers.user_id
+    JOIN webusers ON webseller.user_id = webusers.user_id
     WHERE webseller.car_id = $1
   `, [carid]);
 
