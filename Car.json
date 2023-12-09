@@ -1,19 +1,6 @@
 {
   "results": [
     {
-      "makeid": 1,
-      "car_id": 1,
-      "seller_id": 1,
-      "car_model": "Acty",
-      "car_price": "6548.99",
-      "car_year": "1989",
-      "car_miles": "123573",
-      "car_location": "Galway",
-      "car_desc": "A small Kei truck perfectly suited for any urban roadtrip, you can put a bike in the back and go to the mountains for a great day out with this little japanese truck",
-      "car_image": "https://japanesenostalgiccar.com/wordpress/wp-content/uploads/2022/08/Honda-Acty-4WD-Attack-1988.jpg",
-      "makename": "Honda"
-    },
-    {
       "makeid": 2,
       "car_id": 3,
       "seller_id": 1,
@@ -170,17 +157,17 @@
       "makename": "Hyundai"
     },
     {
-      "makeid": 11,
-      "car_id": 14,
+      "makeid": 14,
+      "car_id": 1,
       "seller_id": 1,
-      "car_model": "test",
-      "car_price": "1111.00",
-      "car_year": "1111",
-      "car_miles": "test",
-      "car_location": "test",
-      "car_desc": "test",
-      "car_image": "test",
-      "makename": "test"
+      "car_model": "Acty",
+      "car_price": "6548.99",
+      "car_year": "1989",
+      "car_miles": "123573",
+      "car_location": "Galway",
+      "car_desc": "A small Kei truck perfectly suited for any urban roadtrip, you can put a bike in the back and go to the mountains for a great day out with this little japanese truck",
+      "car_image": "https://japanesenostalgiccar.com/wordpress/wp-content/uploads/2022/08/Honda-Acty-4WD-Attack-1988.jpg",
+      "makename": "Honda"
     }
   ]
 }
