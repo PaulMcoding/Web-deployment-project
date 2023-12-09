@@ -296,6 +296,8 @@
 const urlParams = new URLSearchParams(window.location.search);
 const carId = urlParams.get('carId');
 
+// ...
+
 // Function to fetch car details by carId
 async function getCarDetails(carId) {
   try {
@@ -313,17 +315,24 @@ async function getCarDetails(carId) {
     if (data && data.results && data.results.length > 0) {
       const carDetails = data.results[0];
 
+      // Log carDetails to the console for troubleshooting
+      console.log('carDetails:', carDetails);
+
       // Populate form fields with default values
-      document.getElementById('updateId').value = carDetails.car_id;
-      document.getElementById('make2').value = carDetails.makeid;
-      document.getElementById('makename').value = carDetails.makename;
-      document.getElementById('model2').value = carDetails.model;
-      document.getElementById('price2').value = carDetails.price;
-      document.getElementById('year2').value = carDetails.year;
-      document.getElementById('miles2').value = carDetails.miles;
-      document.getElementById('location2').value = carDetails.location;
-      document.getElementById('desc2').value = carDetails.description;
-      document.getElementById('image2').value = carDetails.image;
+      if (carDetails) {
+        document.getElementById('updateId').value = carDetails.car_id;
+        document.getElementById('make2').value = carDetails.makeid;
+        document.getElementById('makename').value = carDetails.makename;
+        document.getElementById('model2').value = carDetails.car_model;
+        document.getElementById('price2').value = carDetails.car_price;
+        document.getElementById('year2').value = carDetails.car_year;
+        document.getElementById('miles2').value = carDetails.car_miles;
+        document.getElementById('location2').value = carDetails.car_location;
+        document.getElementById('desc2').value = carDetails.car_desc;
+        document.getElementById('image2').value = carDetails.car_image;
+      } else {
+        console.error('No data available for the specified carId');
+      }
     } else {
       console.error('No data available for the specified carId');
     }
@@ -331,8 +340,6 @@ async function getCarDetails(carId) {
     console.error('Error fetching car details:', error);
   }
 }
-
-// Call the function with the extracted carId
 getCarDetails(carId);
 
 </script>

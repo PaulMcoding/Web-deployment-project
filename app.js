@@ -285,7 +285,7 @@ app.post('/getdetails', async (req, res) => {
   try {
     const carid = req.body.carID;
     const client = await pool.connect();
-    const result = await client.query('SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_id = $1', [carid]);
+    const result = await client.query('SELECT * FROM car join make using(makeid) where car_id = $1', [carid]);
     const results = { 'results': (result) ? result.rows : null };
     res.send(results);
     client.release();
