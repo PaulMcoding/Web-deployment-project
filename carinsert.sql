@@ -1,4 +1,4 @@
--- Code by William Moore and Paul Murnane
+-- <!-- Code by C21437002 William Moore and C213591216 Paul Murnane -->
 
 insert into car(makeid, car_model, car_price, car_year, car_miles, car_location, car_desc, car_image ,seller_id)
 values(1, 'Acty', 6548.99, '1989', '123573', 'Galway', 'A small Kei truck perfectly suited for any urban roadtrip, you can put a bike in the back and go to the mountains for a great day out with this little japanese truck',

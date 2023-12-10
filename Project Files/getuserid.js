@@ -1,4 +1,4 @@
-// code by William Moore and Paul Murnane
+// <!-- Code by C21437002 William Moore and C213591216 Paul Murnane -->
 
 function getUserID() {
   console.log("Start fetching User ID...");

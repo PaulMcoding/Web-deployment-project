@@ -1,4 +1,4 @@
-// code by William Moore and Paul Murnane
+// <!-- Code by C21437002 William Moore and C213591216 Paul Murnane -->
 
 var express = require("express");
 var session = require("express-session");

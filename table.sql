@@ -1,4 +1,4 @@
--- Code by William Moore and Paul Murnane
+-- <!-- Code by C21437002 William Moore and C213591216 Paul Murnane -->
 
 drop table favourite;
 drop table webseller;
