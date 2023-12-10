@@ -1,31 +1,31 @@
 function fetchData() {
-    fetch('/getfavdata')
-      .then(response => response.json())
-      .then(data => {
-        if (!scriptExecuted) {
-          for (let i = 0; i < data.results.length; i++) {
-            displayCar(i, data.results[i]);
-          }
-          scriptExecuted = true;
+  fetch("/getfavdata")
+    .then((response) => response.json())
+    .then((data) => {
+      if (!scriptExecuted) {
+        for (let i = 0; i < data.results.length; i++) {
+          displayCar(i, data.results[i]);
         }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
+        scriptExecuted = true;
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
 
 function displayCar(car_id, carData) {
-    const carContainer = document.getElementById('carContainer');
-    const carBox = document.createElement('div');
-    carBox.classList.add('col');
+  const carContainer = document.getElementById("carContainer");
+  const carBox = document.createElement("div");
+  carBox.classList.add("col");
 
-    const imageUrl = carData.car_image;
-    const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
-    const carDesc = carData.car_desc;
-    const carPrice = carData.car_price;
-    const carID = carData.car_id;
+  const imageUrl = carData.car_image;
+  const carName = `${carData.car_year} ${carData.makename} ${carData.car_model}`;
+  const carDesc = carData.car_desc;
+  const carPrice = carData.car_price;
+  const carID = carData.car_id;
 
-    carBox.innerHTML = `
+  carBox.innerHTML = `
       <div class="card shadow-sm">
         <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="${imageUrl}" alt="${car_id}">
         <div class="card-body">
@@ -42,5 +42,5 @@ function displayCar(car_id, carData) {
       </div>
     `;
 
-    carContainer.appendChild(carBox);
-  }
+  carContainer.appendChild(carBox);
+}
