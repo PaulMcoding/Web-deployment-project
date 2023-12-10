@@ -21,6 +21,14 @@ All backend routes
 Car.json
 just a JSON readout of all cars in DB
 
+
+SET UP DATABASE (USING POSTGRES)
+1. run table.sql
+2. start app.js and create admin account e.g admin@gmail.com, admin
+3. run carinsert.sql
+4. refresh page
+
+
 interact with a database with
 [10] authentication mechanism <-- sessions with public and private pages ✅
 [10] CRUD ✅
