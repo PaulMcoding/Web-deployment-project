@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
     port: 54321 // PostgreSQL database port
   });
 
-//Web page routes
+//public page routes
 app.use(express.static(path.join(__dirname, 'Project Files')));
 
 app.get('/', (req, res) => {
@@ -48,26 +48,36 @@ app.get('/', (req, res) => {
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signin.html');
 });
-app.get('/addCars', (req, res) => {
-  res.sendFile(__dirname + '/Project Files/addCars.html');
-});
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signup.html');
 });
 app.get('/details', (req, res) => {
     res.sendFile(__dirname + '/Project Files/detailedcarview.html');
   });
-  app.get('/favs', (req, res) => {
-    res.sendFile(__dirname + '/Project Files/viewfavourites.html');
-  });
 app.get('/album', (req, res) => {
   res.redirect('/allcars.html'); 
 });
+//private page routes
+app.get('/addCars', (req, res) => {
+    if (req.session.username) {
+        res.sendFile(__dirname + '/Project Files/addCars.html');
+    } else {
+      res.redirect('/signin?signedin=view');
+    }
+});
+ app.get('/favs', (req, res) => {
+    if (req.session.username) {
+      res.sendFile(__dirname + '/Project Files/viewfavourites.html');
+    } else {
+      res.redirect('/signin?signedin=view'); 
+    }
+    });
+
  app.get('/mycars', (req, res) => {
     if (req.session.username) {
       res.sendFile(__dirname + '/Project Files/car.html');
     } else {
-      res.redirect('/signin?signedin=view'); 
+      res.redirect('/signin?signedin=view');
     }
     });
 
@@ -80,18 +90,16 @@ app.get('/readmessage', (req, res) => {
   });
 
 app.get('/updateCars', async (req, res) => {
-    const carId = req.query.carId;
 
-    // Fetch data based on carId from the database
+    if (req.session.username) {
+    const carId = req.query.carId;
     try {
         const client = await pool.connect();
         const result = await client.query('SELECT * FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_id = $1', [carId]);
 
         if (result.rows.length === 0) {
-            // Car not found
             es.sendFile(path.join(__dirname, '/Project Files/cars.html'));
         } else {
-            // Car found, send the updateCars.html file
             res.sendFile(path.join(__dirname, '/Project Files/updateCars.html'));
         }
 
@@ -99,6 +107,9 @@ app.get('/updateCars', async (req, res) => {
     } catch (error) {
         console.error('Error fetching car data:', error);
         res.status(500).send('Internal Server Error');
+        }
+    } else {
+        res.redirect('/signin?signedin=view');
     }
 });
 
@@ -126,6 +137,7 @@ app.post('/signup', async (req, res) => {
 });
 
 app.get('/getUserId', async (req, res) => {
+if (req.session.username) {
   try {
     const userID = req.session.userID;
 
@@ -134,6 +146,9 @@ app.get('/getUserId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching user ID:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+    } else {
+    res.redirect('/signin?signedin=view');
   }
 });
 
@@ -207,34 +222,44 @@ app.get('/search', async (req, res) => {
 });
 
 
-app.get('/getdata', async (req, res) => {
-  try {
-    const client = await pool.connect();
-    const searchQuery = req.query.query;
-    let query;
+app.get('/getdata', async (req, res) =>
+{
+        try
+        {
+            const client = await pool.connect();
+            const searchQuery = req.query.query;
+            let query;
 
-    if (searchQuery) {
-      query = {
-        text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1 OR car_year = $2',
-        values: [`%${searchQuery}%`, searchQuery],
-      };
-    } else {
-      query = {
-        text: 'SELECT * FROM car JOIN make USING (makeid)',
-      };
-    }
+            if (searchQuery)
+            {
+                query =
+                {
+                    text: 'SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1 OR car_year = $2',
+                    values: [`%${searchQuery}%`, searchQuery],
+                };
+            }
+            else
+            {
+                query =
+                {
+                    text: 'SELECT * FROM car JOIN make USING (makeid)',
+                };
+            }
 
-    const result = await client.query(query);
-    const results = { 'results': (result) ? result.rows : null };
-    res.json(results);
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
+            const result = await client.query(query);
+            const results = { 'results': (result) ? result.rows : null };
+            res.json(results);
+            client.release();
+        }
+        catch (err)
+        {
+            console.error(err);
+            res.send("Error " + err);
+        }
 });
 
 app.get('/getfavdata', async (req, res) => {
+if (req.session.username) {
   try {
     const uid = req.session.userID;
     const client = await pool.connect();
@@ -252,9 +277,13 @@ app.get('/getfavdata', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }
+        } else {
+    res.redirect('/signin?signedin=view');
+  }
 });
 
 app.get('/getusersdata', async (req, res) => {
+if (req.session.username) {
   const id = req.session.userID;
   if(id == 1)
   {
@@ -281,10 +310,14 @@ app.get('/getusersdata', async (req, res) => {
       res.send("Error " + err);
     }
 }
+} else {
+    res.redirect('/signin?signedin=view');
+  }
 });
 
 //database manipulation routes
 app.post('/getdetails', async (req, res) => {
+if (req.session.username) {
   try {
     const carid = req.body.carID;
     const client = await pool.connect();
@@ -296,11 +329,15 @@ app.post('/getdetails', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }
+} else {
+    res.redirect('/signin?signedin=view');
+    }
 });
 
 
 //database manipulation routes
 app.post('/getmessage', async (req, res) => {
+if (req.session.username) {
   try {
     const carid = req.body.carID;
     const client = await pool.connect();
@@ -317,6 +354,9 @@ app.post('/getmessage', async (req, res) => {
     console.error(err);
     res.send("Error " + err);
   }
+  } else {
+    res.redirect('/signin?signedin=view');
+    }
 });
 
 app.post('/writeToFile', (req, res) => {
@@ -472,23 +512,3 @@ app.post('/messageSeller', async (req, res) => {
   app.listen(8080, () => {
     console.log('Server is running on port 8080');
   });
-
-
-/*
-app.get('/loggedin')
-if(req.session.userID)
-{
-  res.status(305);
-}
-else
-{
-  res.status(200);
-}
-*/
-
-/*
-if(response.status==305)
-  show log out
-else
-  show log in
- */
