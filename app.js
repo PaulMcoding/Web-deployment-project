@@ -61,6 +61,7 @@ app.get("/details", (req, res) => {
 app.get("/album", (req, res) => {
   res.redirect("/allcars.html");
 });
+
 //private page routes
 app.get("/addCars", (req, res) => {
   if (req.session.username) {

@@ -8,10 +8,6 @@ allcars.html
 Display all cars, not just a set amount but all in database
 car.html
 Allow viewing of own cars, editing and deleting
-car2.html
-copy of car.html for temporary usage
-checkout.html
-currently for buying a car but can be removed as we dont need checkout functionality
 detailedcarview.html
 more in depth view of each car, allow contact to seller
 index.html
