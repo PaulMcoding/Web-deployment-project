@@ -17,6 +17,26 @@
 
     <style>
 
+    #updateCarForm {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Style form labels */
+#updateCarForm label {
+    display: block;
+    margin-top: 10px;
+}
+
+/* Style form inputs */
+#updateCarForm input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+
     #authButton2, #authButton3, #authButton4 {
         display: none;
         }
@@ -252,6 +272,7 @@
             <input id="desc2" name="desc" required type="text">
             <label for="image">Image URL:</label>
             <input id="image2" name="image" required type="text">
+            <br><br>
             <button class="btn btn-primary" onclick="updateCar()" type="button">Update Car</button>
         </form>
 

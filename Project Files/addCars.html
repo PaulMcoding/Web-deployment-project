@@ -16,6 +16,26 @@
     <link href="boot/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+/* Style the addCarForm container */
+#addCarForm {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Style form labels for addCarForm */
+#addCarForm label {
+    display: block;
+    margin-top: 10px;
+}
+
+/* Style form inputs for addCarForm */
+#addCarForm input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
 
     #authButton2, #authButton3, #authButton4 {
         display: none;
@@ -247,6 +267,7 @@
             <input id="desc1" name="desc" required type="text">
             <label for="image">Image URL:</label>
             <input id="image" name="image" required type="text">
+            <br><br>
             <button class="btn btn-primary" onclick="addCar()" type="button">Add Car</button>
         </form>
     </div>
