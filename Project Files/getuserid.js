@@ -1,3 +1,5 @@
+// code by William Moore and Paul Murnane
+
 function getUserID() {
   console.log("Start fetching User ID...");
   fetch("/getUserId", {

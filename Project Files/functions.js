@@ -1,3 +1,5 @@
+// code by William Moore and Paul Murnane
+
 function fetchData() {
   fetch("/getfavdata")
     .then((response) => response.json())

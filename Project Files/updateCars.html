@@ -1,3 +1,5 @@
+<!-- Code by William Moore and Paul Murnane -->
+
 <!doctype html>
 <html data-bs-theme="auto" lang="en">
 <head>
@@ -17,41 +19,40 @@
 
     <style>
 
-    #updateCarForm {
-    max-width: 600px;
-    margin: 0 auto;
-}
+        #updateCarForm {
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-/* Style form labels */
-#updateCarForm label {
-    display: block;
-    margin-top: 10px;
-}
-
-/* Style form inputs */
-#updateCarForm input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-}
+        #updateCarForm label {
+            display: block;
+            margin-top: 10px;
+        }
 
 
-    #authButton2, #authButton3, #authButton4 {
+        #updateCarForm input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+
+        #authButton2, #authButton3, #authButton4 {
         display: none;
         }
 
 
         table {
-    margin: 20px 0;
-    padding: 20px;
-}
+            margin: 20px 0;
+            padding: 20px;
+        }
 
         main {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around; /* Adjust as needed */
+            justify-content: space-around;
         }
 
 
@@ -358,11 +359,6 @@ getCarDetails(carId);
         window.location.href = '/mycars';
       const result = await response.json();
     }
-
-
-
 </script>
-
-
 </body>
 </html>

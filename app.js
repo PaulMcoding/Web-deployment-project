@@ -1,3 +1,5 @@
+// code by William Moore and Paul Murnane
+
 var express = require("express");
 var session = require("express-session");
 var app = express();

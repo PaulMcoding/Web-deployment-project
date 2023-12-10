@@ -1,3 +1,5 @@
+-- Code by William Moore and Paul Murnane
+
 drop table favourite;
 drop table webseller;
 drop table car; 

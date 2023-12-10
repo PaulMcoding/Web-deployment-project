@@ -1,3 +1,5 @@
+<!-- Code by William Moore and Paul Murnane -->
+
 <!doctype html>
 <html data-bs-theme="auto" lang="en">
 <head>
@@ -23,9 +25,9 @@
 
 
         table {
-    margin: 20px 0;
-    padding: 20px;
-}
+            margin: 20px 0;
+            padding: 20px;
+        }
 
 
         main {
@@ -114,7 +116,6 @@
 
 
     </style>
-
 
     <!-- Custom styles for this template -->
     <link href="CSS/carousel.css" rel="stylesheet">
@@ -259,8 +260,6 @@
         </table>
     </div>
     <hr>
-
-    <!-- In your HTML file -->
     <button class="btn btn-primary" id="AddCars">Add Car</button>
 
 </main>
@@ -325,11 +324,11 @@ async function deleteCar(id)
     console.log(result.message);
     displayCars();
 }
-
+// go to update car page
 function updateCars(carId) {
     window.location.href = `/updateCars?carId=${carId}`;
 }
-
+// go to add car page
 document.getElementById('AddCars').addEventListener('click', function() {
   window.location.href = '/addCars';
 });
