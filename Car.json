@@ -1,6 +1,19 @@
 {
   "results": [
     {
+      "makeid": 1,
+      "car_id": 1,
+      "seller_id": 1,
+      "car_model": "Acty",
+      "car_price": "6548.99",
+      "car_year": "1989",
+      "car_miles": "123573",
+      "car_location": "Galway",
+      "car_desc": "A small Kei truck perfectly suited for any urban roadtrip, you can put a bike in the back and go to the mountains for a great day out with this little japanese truck",
+      "car_image": "https://japanesenostalgiccar.com/wordpress/wp-content/uploads/2022/08/Honda-Acty-4WD-Attack-1988.jpg",
+      "makename": "Honda"
+    },
+    {
       "makeid": 2,
       "car_id": 3,
       "seller_id": 1,
@@ -155,19 +168,6 @@
       "car_desc": "A new car to the scene with styling from old mixed with new technology of today",
       "car_image": "https://www.topgear.com/sites/default/files/2023/05/1%20Hyundai%20N%20Vision%2074.jpg",
       "makename": "Hyundai"
-    },
-    {
-      "makeid": 14,
-      "car_id": 1,
-      "seller_id": 1,
-      "car_model": "Acty",
-      "car_price": "6548.99",
-      "car_year": "1989",
-      "car_miles": "123573",
-      "car_location": "Galway",
-      "car_desc": "A small Kei truck perfectly suited for any urban roadtrip, you can put a bike in the back and go to the mountains for a great day out with this little japanese truck",
-      "car_image": "https://japanesenostalgiccar.com/wordpress/wp-content/uploads/2022/08/Honda-Acty-4WD-Attack-1988.jpg",
-      "makename": "Honda"
     }
   ]
 }

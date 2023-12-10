@@ -34,28 +34,6 @@
             justify-content: space-around; /* Adjust as needed */
         }
 
-        .forms-container {
-            display: flex;
-            justify-content: space-around; /* Adjust as needed */
-            width: 100%;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        form label {
-            margin-bottom: 5px;
-        }
-
-        form input {
-            width: 100%; /* Make the input fields fill the width */
-            padding: 5px;
-            box-sizing: border-box; /* Include padding and border in width calculation */
-            margin-bottom: 10px;
-        }
 
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -274,7 +252,7 @@
             <input id="desc2" name="desc" required type="text">
             <label for="image">Image URL:</label>
             <input id="image2" name="image" required type="text">
-            <button onclick="updateCar()" type="button">Update Car</button>
+            <button class="btn btn-primary" onclick="updateCar()" type="button">Update Car</button>
         </form>
 
         <hr>
@@ -352,7 +330,7 @@ getCarDetails(carId);
         },
         body: JSON.stringify({ id: updateId, makeID: modelID, make, model, price, year, miles, location, desc, image }),
         });
-
+        window.location.href = '/mycars';
       const result = await response.json();
       console.log(result.message);
     }

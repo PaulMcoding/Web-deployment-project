@@ -34,29 +34,6 @@
             justify-content: space-around; /* Adjust as needed */
         }
 
-        .forms-container {
-            display: flex;
-            justify-content: space-around; /* Adjust as needed */
-            width: 100%;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        form label {
-            margin-bottom: 5px;
-        }
-
-        form input {
-            width: 100%; /* Make the input fields fill the width */
-            padding: 5px;
-            box-sizing: border-box; /* Include padding and border in width calculation */
-            margin-bottom: 10px;
-        }
-
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -251,33 +228,27 @@
 <body>
 <main>
     <br><br>
-        <!-- Form for Updating a Car -->
-        <h2>Update Car</h2>
-        <form id="updateCarForm">
-            <label for="updateId">Car ID to Update:</label>
-            <input id="updateId" name="updateId" required type="number">
-            <label for="make">Make ID:</label>
-            <input id="make2" name="makeid" required type="number">
+        <div class="forms-container">
+        <h2>Add New Car</h2>
+        <form id="addCarForm">
             <label for="make">Make:</label>
-            <input id="makename" name="makename" required type="text">
+            <input id="make" name="make" required type="text">
             <label for="model">Model:</label>
-            <input id="model2" name="model" required type="text">
+            <input id="model" name="model" required type="text">
             <label for="price">Price:</label>
-            <input id="price2" name="price" required step="0.01" type="number">
+            <input id="price" name="price" required step="0.01" type="number">
             <label for="year">Year:</label>
-            <input id="year2" maxlength="4" name="year" required type="text">
+            <input id="year" maxlength="4" name="year" required type="text">
             <label for="miles">Miles:</label>
-            <input id="miles2" maxlength="8" name="miles" required type="text">
+            <input id="miles" maxlength="8" name="miles" required type="text">
             <label for="location">Location:</label>
-            <input id="location2" name="location" required type="text">
+            <input id="location" name="location" required type="text">
             <label for="desc">Car Description:</label>
-            <input id="desc2" name="desc" required type="text">
+            <input id="desc1" name="desc" required type="text">
             <label for="image">Image URL:</label>
-            <input id="image2" name="image" required type="text">
-            <button onclick="updateCar()" type="button">Update Car</button>
+            <input id="image" name="image" required type="text">
+            <button class="btn btn-primary" onclick="addCar()" type="button">Add Car</button>
         </form>
-
-        <hr>
     </div>
 </main>
 </body>
@@ -292,71 +263,33 @@
 <!-- Add this script to your updateCars.html file -->
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
-const carId = urlParams.get('carId');
+// Function to add a new car
+async function addCar()
+{
+    const make = document.getElementById('make').value;
+    const model = document.getElementById('model').value;
+    const price = document.getElementById('price').value;
+    const year = document.getElementById('year').value;
+    const miles = document.getElementById('miles').value;
+    const location = document.getElementById('location').value;
+    const desc = document.getElementById('desc1').value;
+    const image = document.getElementById('image').value;
 
-async function getCarDetails(carId) {
-  try {
-    const response = await fetch(`/getdetails`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ carID: carId }),
+    const response = await fetch('/add',
+    {
+        method: 'POST',
+        headers:
+        {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ make, model, price, year, miles, location, desc, image }),
     });
 
-    const data = await response.json();
+    const result = await response.json();
+    console.log(result.message);
 
-    if (data && data.results && data.results.length > 0) {
-      const carDetails = data.results[0];
-      if (carDetails) {
-        document.getElementById('updateId').value = carDetails.car_id;
-        document.getElementById('make2').value = carDetails.makeid;
-        document.getElementById('makename').value = carDetails.makename;
-        document.getElementById('model2').value = carDetails.car_model;
-        document.getElementById('price2').value = carDetails.car_price;
-        document.getElementById('year2').value = carDetails.car_year;
-        document.getElementById('miles2').value = carDetails.car_miles;
-        document.getElementById('location2').value = carDetails.car_location;
-        document.getElementById('desc2').value = carDetails.car_desc;
-        document.getElementById('image2').value = carDetails.car_image;
-      } else {
-        console.error('No data available for the specified carId');
-      }
-    } else {
-      console.error('No data available for the specified carId');
-    }
-  } catch (error) {
-    console.error('Error fetching car details:', error);
-  }
+    window.location.href = '/mycars';
 }
-getCarDetails(carId);
-
-// Function to update a car
-    async function updateCar() {
-      const updateId = document.getElementById('updateId').value;
-      const modelID = document.getElementById('make2').value;
-      const make = document.getElementById('makename').value;
-      const model = document.getElementById('model2').value;
-      const price = document.getElementById('price2').value;
-      const year = document.getElementById('year2').value;
-      const miles = document.getElementById('miles2').value;
-      const location = document.getElementById('location2').value;
-      const desc = document.getElementById('desc2').value;
-      const image = document.getElementById('image2').value;
-
-      const response = await fetch('/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: updateId, makeID: modelID, make, model, price, year, miles, location, desc, image }),
-        });
-
-      const result = await response.json();
-      console.log(result.message);
-    }
-
 </script>
 
 

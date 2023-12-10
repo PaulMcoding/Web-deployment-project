@@ -48,6 +48,9 @@ app.get('/', (req, res) => {
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signin.html');
 });
+app.get('/addCars', (req, res) => {
+  res.sendFile(__dirname + '/Project Files/addCars.html');
+});
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/Project Files/signup.html');
 });
