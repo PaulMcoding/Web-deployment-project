@@ -315,26 +315,40 @@ app.get("/getusersdata", async (req, res) => {
   }
 });
 
-//database manipulation routes
-app.post("/getdetails", async (req, res) => {
-  if (req.session.username) {
-    try {
-      const carid = req.body.carID;
-      const client = await pool.connect();
-      const result = await client.query(
-        "SELECT * FROM car join make using(makeid) where car_id = $1",
-        [carid]
-      );
-      const results = { results: result ? result.rows : null };
-      console.log(results);
-      res.send(results);
-      client.release();
-    } catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  } else {
-    res.redirect("/signin?signedin=view");
+// //database manipulation routes
+// app.post("/getdetails", async (req, res) => {
+//   if (req.session.username) {
+//     try {
+//       const carid = req.body.carID;
+//       const client = await pool.connect();
+//       const result = await client.query(
+//         "SELECT * FROM car join make using(makeid) where car_id = $1",
+//         [carid]
+//       );
+//       const results = { results: result ? result.rows : null };
+//       console.log(results);
+//       res.send(results);
+//       client.release();
+//     } catch (err) {
+//       console.error(err);
+//       res.send("Error " + err);
+//     }
+//   } else {
+//     res.redirect("/signin?signedin=view");
+//   }
+// });
+
+app.post('/getdetails', async (req, res) => {
+  try {
+    const carid = req.body.carID;
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM car join make using(makeid) where car_id = $1', [carid]);
+    const results = { 'results': (result) ? result.rows : null };
+    res.send(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
   }
 });
 
