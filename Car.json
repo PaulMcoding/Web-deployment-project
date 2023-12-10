@@ -41,6 +41,19 @@
     },
     {
       "makeid": 3,
+      "car_id": 4,
+      "seller_id": 1,
+      "car_model": "M5 Competition",
+      "car_price": "64555.99",
+      "car_year": "2019",
+      "car_miles": "101486",
+      "car_location": "Dublin",
+      "car_desc": "German automitve perfection",
+      "car_image": "https://www.topgear.com/sites/default/files/cars-car/carousel/2020/10/p90403633_highres_bmw-m5-competition.jpg",
+      "makename": "BMW"
+    },
+    {
+      "makeid": 3,
       "car_id": 8,
       "seller_id": 1,
       "car_model": "M8 Competition",
@@ -92,19 +105,6 @@
       "makename": "BMW"
     },
     {
-      "makeid": 3,
-      "car_id": 4,
-      "seller_id": 1,
-      "car_model": "M5 Competition",
-      "car_price": "64555.99",
-      "car_year": "1994",
-      "car_miles": "101486",
-      "car_location": "Dublin",
-      "car_desc": "German automitve perfection",
-      "car_image": "https://www.topgear.com/sites/default/files/cars-car/carousel/2020/10/p90403633_highres_bmw-m5-competition.jpg",
-      "makename": "BMW"
-    },
-    {
       "makeid": 4,
       "car_id": 12,
       "seller_id": 1,
@@ -113,9 +113,22 @@
       "car_year": "2022",
       "car_miles": "47650",
       "car_location": "Wexford",
-      "car_desc": "Good daily",
+      "car_desc": "Rally car made for the roads, more horsepower per cylinder than a Bugatti veyron",
       "car_image": "https://www.topgear.com/sites/default/files/2022/06/1-Toyota-Corolla-GR-Morizo-Edition.jpg",
       "makename": "Toyota"
+    },
+    {
+      "makeid": 5,
+      "car_id": 14,
+      "seller_id": 4,
+      "car_model": "AMG GT63",
+      "car_price": "170000.00",
+      "car_year": "2019",
+      "car_miles": "19000",
+      "car_location": "Dublin",
+      "car_desc": "4 door 600 horsepower family car",
+      "car_image": "https://images.pistonheads.com/nimg/47737/mceu_93383751211696961803948.jpg",
+      "makename": "Mercedes"
     },
     {
       "makeid": 6,
@@ -142,19 +155,6 @@
       "car_desc": "Porsche race car for the road",
       "car_image": "https://smgmedia.blob.core.windows.net/images/129280/1920/porsche-911-gt3-coupe-10814f193b36.jpg",
       "makename": "Porsche"
-    },
-    {
-      "makeid": 8,
-      "car_id": 11,
-      "seller_id": 1,
-      "car_model": "DB9",
-      "car_price": "84950.00",
-      "car_year": "2015",
-      "car_miles": "27870",
-      "car_location": "Cork",
-      "car_desc": "Perfect if your a businessman",
-      "car_image": "https://assets.newatlas.com/dims4/default/30e5a82/2147483647/strip/true/crop/1280x720+0+31/resize/1200x675!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2Farchive%2Faston-martin-db9-2013.jpg",
-      "makename": "Aston Martin"
     },
     {
       "makeid": 9,

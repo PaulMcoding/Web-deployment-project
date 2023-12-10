@@ -216,11 +216,10 @@ app.get("/search", async (req, res) => {
       );
     } else {
       result = await pool.query(
-        "SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_year = $2",
+        "SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_location ILIKE $1 OR car.car_year = $2",
         [`%${query}%`, query]
       );
     }
-
     res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
   } catch (error) {
     console.error("Error executing search query:", error);
@@ -236,7 +235,7 @@ app.get("/getdata", async (req, res) => {
 
     if (searchQuery) {
       query = {
-        text: "SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1 OR car_year = $2",
+        text: "SELECT * FROM car JOIN make USING (makeid) WHERE car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_location ILIKE $1 OR car_year = $2",
         values: [`%${searchQuery}%`, searchQuery],
       };
     } else {
@@ -315,29 +314,6 @@ app.get("/getusersdata", async (req, res) => {
   }
 });
 
-// //database manipulation routes
-// app.post("/getdetails", async (req, res) => {
-//   if (req.session.username) {
-//     try {
-//       const carid = req.body.carID;
-//       const client = await pool.connect();
-//       const result = await client.query(
-//         "SELECT * FROM car join make using(makeid) where car_id = $1",
-//         [carid]
-//       );
-//       const results = { results: result ? result.rows : null };
-//       console.log(results);
-//       res.send(results);
-//       client.release();
-//     } catch (err) {
-//       console.error(err);
-//       res.send("Error " + err);
-//     }
-//   } else {
-//     res.redirect("/signin?signedin=view");
-//   }
-// });
-
 app.post('/getdetails', async (req, res) => {
   try {
     const carid = req.body.carID;
@@ -352,7 +328,6 @@ app.post('/getdetails', async (req, res) => {
   }
 });
 
-//database manipulation routes
 app.post("/getmessage", async (req, res) => {
   if (req.session.username) {
     try {
