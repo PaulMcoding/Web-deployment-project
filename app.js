@@ -141,7 +141,6 @@ if (req.session.username) {
   try {
     const userID = req.session.userID;
 
-    console.log('User ID:', userID);
     res.json({ userID });
   } catch (error) {
     console.error('Error fetching user ID:', error);
@@ -167,7 +166,6 @@ app.post('/signin', async (req, res) => {
         req.session.userID = uID;
         const userID = req.session.userID;
 
-    console.log('User ID:', userID);
 
         return res.redirect('/');
       } else {
@@ -202,17 +200,13 @@ app.get('/search', async (req, res) => {
 
     if (!query) {
       result = await pool.query('SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid');
-      console.log('All Cars Result:', result.rows);
     } else {
       result = await pool.query(
         'SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE $1 OR make.makename ILIKE $1 OR car.car_year = $2',
         [`%${query}%`, query]
       );
-
-      console.log('Query:', `SELECT car.*, make.makename FROM car JOIN make ON car.makeid = make.makeid WHERE car.car_model ILIKE '${query}' OR make.makename ILIKE '${query} OR car.car_year ILIKE ${query}`);
     }
 
-    console.log('Result:', result.rows);
 
     res.redirect(`/allcars2.html?query=${encodeURIComponent(query)}`);
   } catch (error) {
